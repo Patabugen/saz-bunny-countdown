@@ -1,12 +1,13 @@
 import AppKit
 import Combine
+import SwiftUI
 
 class FloatingPanel: NSWindow {
     let focusState = PanelFocusState()
 
     init(contentView: NSView) {
         super.init(
-            contentRect: NSRect(x: 0, y: 0, width: 240, height: 100),
+            contentRect: NSRect(x: 0, y: 0, width: ClayTheme.windowWidth, height: ClayTheme.windowHeight),
             styleMask: [.borderless],
             backing: .buffered,
             defer: false

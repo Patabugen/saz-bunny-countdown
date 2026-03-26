@@ -8,49 +8,56 @@ struct ListeningView: View {
 
     var body: some View {
         ZStack(alignment: .topTrailing) {
-            RoundedRectangle(cornerRadius: 12)
-                .fill(.ultraThinMaterial)
+            // Background
+            RoundedRectangle(cornerRadius: ClayTheme.cornerRadius)
+                .fill(ClayTheme.background)
+                .shadow(
+                    color: ClayTheme.outerShadowColor,
+                    radius: ClayTheme.outerShadowRadius,
+                    x: ClayTheme.outerShadowX,
+                    y: ClayTheme.outerShadowY
+                )
                 .overlay(
-                    RoundedRectangle(cornerRadius: 12)
+                    RoundedRectangle(cornerRadius: ClayTheme.cornerRadius)
                         .strokeBorder(
-                            focusState.isFocused ? Color.accentColor.opacity(0.8) : Color.white.opacity(0.2),
-                            lineWidth: focusState.isFocused ? 2 : 1
+                            focusState.isFocused ? ClayTheme.focusBorder : ClayTheme.unfocusBorder,
+                            lineWidth: focusState.isFocused ? 2.5 : 1
                         )
                 )
 
             VStack(spacing: 6) {
                 if let error = speechRecognizer.error {
                     Text(error)
-                        .font(.system(size: 12))
-                        .foregroundColor(.red)
+                        .font(.system(size: 13, weight: .medium, design: .rounded))
+                        .foregroundColor(ClayTheme.errorText)
                         .multilineTextAlignment(.center)
                 } else if speechRecognizer.transcript.isEmpty {
                     Text("When should I finish?")
-                        .font(.system(size: 16, weight: .medium))
-                        .foregroundColor(.primary)
+                        .font(.system(size: 18, weight: .semibold, design: .rounded))
+                        .foregroundColor(ClayTheme.textPrimary)
 
                     if speechRecognizer.isListening {
                         Text("Listening...")
-                            .font(.system(size: 12))
-                            .foregroundColor(.secondary)
+                            .font(.system(size: 13, weight: .medium, design: .rounded))
+                            .foregroundColor(ClayTheme.sage)
                     }
                 } else {
                     Text(speechRecognizer.transcript)
-                        .font(.system(size: 16, weight: .medium))
-                        .foregroundColor(.primary)
+                        .font(.system(size: 18, weight: .semibold, design: .rounded))
+                        .foregroundColor(ClayTheme.textPrimary)
                 }
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
-            .padding(.horizontal, 12)
+            .padding(.horizontal, 16)
 
             Button(action: onDismiss) {
                 Image(systemName: "xmark.circle.fill")
-                    .font(.system(size: 14))
-                    .foregroundColor(.secondary)
+                    .font(.system(size: 16, weight: .medium))
+                    .foregroundColor(ClayTheme.shadow.opacity(0.4))
             }
             .buttonStyle(.plain)
-            .padding(8)
+            .padding(10)
         }
-        .frame(width: 240, height: 100)
+        .frame(width: ClayTheme.windowWidth, height: ClayTheme.windowHeight)
     }
 }

@@ -1,5 +1,24 @@
 # Changelog
 
+## 1.2.0 — 2026-03-26
+
+### Changed
+
+- Visual reskin: "Clay Morph" style with soft rounded shapes and earthy color palette
+- Window size expanded from 240×100 to 320×160 for better readability
+- Timer digits now use SF Pro Rounded Bold with gradient fill and soft shadows
+- Background changed from translucent material to warm off-white (#F3EFEA)
+- Focus border changed from system accent blue to clay orange
+- "Finished" state uses warm terracotta instead of system red
+- All fonts changed to SF Pro Rounded design
+- Corner radius increased from 12pt to 24pt for softer appearance
+
+### Added
+
+- `ClayTheme` struct centralizing all visual constants (colors, dimensions, shadows)
+- Inner shadow and top-left highlight effects on digit background pill
+- Capsule-shaped Quit button with clay styling
+
 ## 1.1.0 — 2026-03-26
 
 ### Added

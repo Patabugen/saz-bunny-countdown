@@ -15,7 +15,7 @@ struct SnapshotTests {
 
         let view = CountdownView(viewModel: viewModel, focusState: focusState) {}
         let hostingView = NSHostingView(rootView: view)
-        hostingView.frame = NSRect(x: 0, y: 0, width: 240, height: 100)
+        hostingView.frame = NSRect(x: 0, y: 0, width: ClayTheme.windowWidth, height: ClayTheme.windowHeight)
         return hostingView
     }
 
@@ -27,7 +27,7 @@ struct SnapshotTests {
 
         let view = ListeningView(speechRecognizer: speechRecognizer, focusState: focusState) {}
         let hostingView = NSHostingView(rootView: view)
-        hostingView.frame = NSRect(x: 0, y: 0, width: 240, height: 100)
+        hostingView.frame = NSRect(x: 0, y: 0, width: ClayTheme.windowWidth, height: ClayTheme.windowHeight)
         return hostingView
     }
 
