@@ -23,6 +23,16 @@ class FloatingPanel: NSWindow {
 
     override var canBecomeKey: Bool { true }
     override var canBecomeMain: Bool { false }
+
+    override func becomeKey() {
+        super.becomeKey()
+        focusState.isFocused = true
+    }
+
+    override func resignKey() {
+        super.resignKey()
+        focusState.isFocused = false
+    }
 }
 
 class PanelFocusState: ObservableObject {

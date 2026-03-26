@@ -24,6 +24,7 @@
 		BB0000000000000000002003 /* URLTimeParserTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB0000000000000000001003 /* URLTimeParserTests.swift */; };
 		BB0000000000000000002004 /* SnapshotTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB0000000000000000001004 /* SnapshotTests.swift */; };
 		BB0000000000000000002005 /* SnapshotTesting in Frameworks */ = {isa = PBXBuildFile; productRef = BB0000000000000000003001 /* SnapshotTesting */; };
+		BB0000000000000000002006 /* FloatingPanelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB0000000000000000001005 /* FloatingPanelTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -47,6 +48,7 @@
 		BB0000000000000000001002 /* SpeechTimeExtractorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpeechTimeExtractorTests.swift; sourceTree = "<group>"; };
 		BB0000000000000000001003 /* URLTimeParserTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLTimeParserTests.swift; sourceTree = "<group>"; };
 		BB0000000000000000001004 /* SnapshotTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SnapshotTests.swift; sourceTree = "<group>"; };
+		BB0000000000000000001005 /* FloatingPanelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FloatingPanelTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXContainerItemProxy section */
@@ -124,6 +126,7 @@
 				BB0000000000000000001002 /* SpeechTimeExtractorTests.swift */,
 				BB0000000000000000001003 /* URLTimeParserTests.swift */,
 				BB0000000000000000001004 /* SnapshotTests.swift */,
+				BB0000000000000000001005 /* FloatingPanelTests.swift */,
 			);
 			path = CountdownTimerTests;
 			sourceTree = "<group>";
@@ -255,6 +258,7 @@
 				BB0000000000000000002002 /* SpeechTimeExtractorTests.swift in Sources */,
 				BB0000000000000000002003 /* URLTimeParserTests.swift in Sources */,
 				BB0000000000000000002004 /* SnapshotTests.swift in Sources */,
+				BB0000000000000000002006 /* FloatingPanelTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

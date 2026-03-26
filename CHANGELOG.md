@@ -9,6 +9,11 @@
   - SpeechTimeExtractor tests: digit patterns, word numbers, compound words, AM/PM handling, passthrough
   - URLTimeParser tests: hour-only, hour:minute (host+port reconstruction), 24-hour, invalid schemes
   - UI snapshot tests using swift-snapshot-testing: focused/unfocused countdown view, listening view states
+  - FloatingPanel focus state test: verifies becomeKey/resignKey update isFocused
+
+### Fixed
+
+- Focus border (blue outline) was never appearing — FloatingPanel was missing becomeKey/resignKey overrides to update focusState
 
 ### Changed
 
