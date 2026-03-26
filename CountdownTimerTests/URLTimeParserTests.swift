@@ -34,4 +34,14 @@ struct URLTimeParserTests {
         let url = URL(string: "countdown:///")!
         #expect(URLTimeParser.extractTime(from: url) == nil)
     }
+
+    @Test("Extracts host for URL with encoded spaces (AM/PM passed to TimeParser)")
+    func encodedAMPM() {
+        // countdown://4%20PM is parsed by URL as host="4%20PM" — port is nil
+        // URLTimeParser returns the host string, TimeParser handles the rest
+        let url = URL(string: "countdown://4%20PM")!
+        let extracted = URLTimeParser.extractTime(from: url)
+        // URL treats "4%20PM" as the host, decoded to "4 PM"
+        #expect(extracted != nil)
+    }
 }

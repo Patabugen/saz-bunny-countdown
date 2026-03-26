@@ -1,3 +1,5 @@
+<p align="center"><img src="saz-bunny-logo.png" height="200" /></p>
+
 # Countdown Timer
 
 A minimal but pretty floating countdown timer for macOS. Tell it when you need to finish, and it stays on screen until time's up. No dock icon, no menu bar — just a small always-on-top widget.

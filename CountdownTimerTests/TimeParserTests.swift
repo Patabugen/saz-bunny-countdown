@@ -144,6 +144,40 @@ struct TimeParserTests {
         }
     }
 
+    // MARK: - Dot Notation AM/PM
+
+    @Test("Parses a.m/p.m dot notation", arguments: [
+        ("4:20 a.m", 4, 20),
+        ("4:20 p.m", 16, 20),
+        ("4:20 a.m.", 4, 20),
+        ("4:20 p.m.", 16, 20),
+    ])
+    func dotNotationAMPM(input: String, expectedHour: Int, expectedMinute: Int) {
+        let result = TimeParser.parse(input)
+        switch result {
+        case .success(let date), .needsConfirmation(let date, _):
+            let cal = Calendar.current
+            #expect(cal.component(.hour, from: date) == expectedHour)
+            #expect(cal.component(.minute, from: date) == expectedMinute)
+        case .failure:
+            Issue.record("Expected success for '\(input)'")
+        }
+    }
+
+    // MARK: - Bare Number Edge Cases
+
+    @Test("Bare 0 resolves to midnight and needs confirmation")
+    func bareZeroIsMidnight() {
+        let result = TimeParser.parse("0")
+        guard case .needsConfirmation(let date, _) = result else {
+            Issue.record("Expected needsConfirmation for '0', got \(result)")
+            return
+        }
+        let cal = Calendar.current
+        #expect(cal.component(.hour, from: date) == 0)
+        #expect(cal.component(.minute, from: date) == 0)
+    }
+
     // MARK: - Ambiguous Resolution
 
     @Test("Ambiguous time resolves to nearest future occurrence")

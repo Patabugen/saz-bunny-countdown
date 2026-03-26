@@ -80,6 +80,18 @@ struct SpeechTimeExtractorTests {
         #expect(SpeechTimeExtractor.extractTime(from: input) == expected)
     }
 
+    // MARK: - Noisy Transcripts
+
+    @Test("Extracts time from noisy speech transcripts", arguments: [
+        ("um set timer for 5:20 pm", "5:20 pm"),
+        ("uh countdown to like 3:45 am please", "3:45 am"),
+        ("okay so five twenty I think", "5:20"),
+        ("yeah three forty five sounds good", "3:45"),
+    ])
+    func noisyTranscripts(input: String, expected: String) {
+        #expect(SpeechTimeExtractor.extractTime(from: input) == expected)
+    }
+
     // MARK: - Passthrough
 
     @Test("Returns original for unrecognized input", arguments: [
