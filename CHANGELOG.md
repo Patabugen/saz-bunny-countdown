@@ -15,6 +15,10 @@
 - Siri / Shortcuts integration via App Intents
 - Runs as an accessory app (no dock icon, no menu bar)
 
+### Added
+
+- Press Escape to dismiss the timer when the window is focused
+
 ### Fixed
 
 - URL scheme now correctly handles times with minutes (e.g., `countdown://5:20`) — previously the URL parser split host and port, dropping the minutes

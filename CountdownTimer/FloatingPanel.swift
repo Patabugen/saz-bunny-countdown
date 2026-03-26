@@ -20,4 +20,12 @@ class FloatingPanel: NSPanel {
 
     override var canBecomeKey: Bool { true }
     override var canBecomeMain: Bool { false }
+
+    override func keyDown(with event: NSEvent) {
+        if event.keyCode == 53 { // Escape
+            (NSApp.delegate as? AppDelegate)?.dismissTimer()
+        } else {
+            super.keyDown(with: event)
+        }
+    }
 }
