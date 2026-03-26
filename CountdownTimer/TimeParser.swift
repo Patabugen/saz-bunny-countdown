@@ -1,0 +1,92 @@
+import Foundation
+
+enum ParseResult {
+    case success(Date)
+    case needsConfirmation(Date, String)
+    case failure(String)
+}
+
+struct TimeParser {
+    static func parse(_ input: String) -> ParseResult {
+        let trimmed = input.trimmingCharacters(in: .whitespaces).lowercased()
+
+        // Detect explicit AM/PM
+        let hasAM = trimmed.hasSuffix("am") || trimmed.contains("a.m")
+        let hasPM = trimmed.hasSuffix("pm") || trimmed.contains("p.m")
+        let explicitPeriod = hasAM || hasPM
+
+        // Strip AM/PM
+        let timeOnly = trimmed
+            .replacingOccurrences(of: #"[ap]\.?m\.?"#, with: "", options: .regularExpression)
+            .trimmingCharacters(in: .whitespaces)
+
+        // Parse hours and minutes
+        var hour: Int
+        var minute: Int = 0
+
+        let parts = timeOnly.split(separator: ":").map(String.init)
+        if parts.count == 2 {
+            guard let h = Int(parts[0]), let m = Int(parts[1]),
+                  (0...23).contains(h), (0...59).contains(m) else {
+                return .failure("Invalid time format: \(input)")
+            }
+            hour = h
+            minute = m
+        } else if parts.count == 1 {
+            guard let h = Int(parts[0]), (0...23).contains(h) else {
+                return .failure("Invalid time format: \(input)")
+            }
+            hour = h
+        } else {
+            return .failure("Invalid time format: \(input)")
+        }
+
+        // Apply AM/PM
+        if explicitPeriod && hour <= 12 {
+            if hasPM && hour != 12 { hour += 12 }
+            if hasAM && hour == 12 { hour = 0 }
+        }
+
+        let calendar = Calendar.current
+        let now = Date()
+
+        // Unambiguous: explicit AM/PM or 24-hour format
+        if explicitPeriod || hour > 12 {
+            let target = nextOccurrence(hour: hour, minute: minute, after: now, calendar: calendar)
+            return checkNightHours(target)
+        }
+
+        // Ambiguous: try both AM and PM, pick nearest future
+        let amHour = (hour == 12) ? 0 : hour
+        let pmHour = (hour == 12) ? 12 : hour + 12
+
+        let amTarget = nextOccurrence(hour: amHour, minute: minute, after: now, calendar: calendar)
+        let pmTarget = nextOccurrence(hour: pmHour, minute: minute, after: now, calendar: calendar)
+
+        let target = amTarget < pmTarget ? amTarget : pmTarget
+        return checkNightHours(target)
+    }
+
+    private static func nextOccurrence(hour: Int, minute: Int, after now: Date, calendar: Calendar) -> Date {
+        var target = calendar.date(bySettingHour: hour, minute: minute, second: 0, of: now)!
+        if target <= now {
+            target = calendar.date(byAdding: .day, value: 1, to: target)!
+        }
+        return target
+    }
+
+    private static func checkNightHours(_ target: Date) -> ParseResult {
+        let hour = Calendar.current.component(.hour, from: target)
+        if hour >= 22 || hour < 9 {
+            let formatter = DateFormatter()
+            formatter.dateStyle = .short
+            formatter.timeStyle = .short
+            let timeStr = formatter.string(from: target)
+            return .needsConfirmation(
+                target,
+                "Timer set for \(timeStr) — that's outside 9 AM–10 PM. Start anyway?"
+            )
+        }
+        return .success(target)
+    }
+}
