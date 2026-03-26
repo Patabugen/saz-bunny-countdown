@@ -59,6 +59,27 @@ struct SpeechTimeExtractorTests {
         #expect(SpeechTimeExtractor.extractTime(from: input) == expected)
     }
 
+    // MARK: - O'Clock
+
+    @Test("Handles o'clock with digits", arguments: [
+        ("9 o'clock", "9"),
+        ("9 o clock", "9"),
+        ("9 oclock", "9"),
+        ("at 3 o'clock", "3"),
+    ])
+    func oclockDigits(input: String, expected: String) {
+        #expect(SpeechTimeExtractor.extractTime(from: input) == expected)
+    }
+
+    @Test("Handles o'clock with word numbers", arguments: [
+        ("nine o'clock", "9"),
+        ("nine o clock", "9"),
+        ("three oclock", "3"),
+    ])
+    func oclockWords(input: String, expected: String) {
+        #expect(SpeechTimeExtractor.extractTime(from: input) == expected)
+    }
+
     // MARK: - Passthrough
 
     @Test("Returns original for unrecognized input", arguments: [

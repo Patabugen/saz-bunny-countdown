@@ -4,6 +4,15 @@ struct SpeechTimeExtractor {
     static func extractTime(from transcript: String) -> String {
         let lower = transcript.lowercased()
 
+        // Match "9 o'clock", "9 oclock", "9 o clock"
+        let oclockPattern = #"(\d{1,2})\s*o['']?\s*clock"#
+        if let match = lower.range(of: oclockPattern, options: .regularExpression) {
+            let matched = String(lower[match])
+            if let num = matched.split(whereSeparator: { !$0.isNumber }).first, let h = Int(num) {
+                return "\(h)"
+            }
+        }
+
         let digitPattern = #"(\d{1,2}:\d{2}\s*(?:am|pm|a\.m|p\.m)?|\d{1,2}\s*(?:am|pm|a\.m|p\.m))"#
         if let range = lower.range(of: digitPattern, options: .regularExpression) {
             return String(lower[range])
@@ -33,7 +42,11 @@ struct SpeechTimeExtractor {
             "fifty seven": 57, "fifty eight": 58, "fifty nine": 59,
         ]
 
-        let words = lower.components(separatedBy: .whitespaces)
+        // Strip o'clock variants before word parsing
+        let cleaned = lower
+            .replacingOccurrences(of: #"o['']?\s*clock"#, with: "", options: .regularExpression)
+            .trimmingCharacters(in: .whitespaces)
+        let words = cleaned.components(separatedBy: .whitespaces)
         var hour: Int?
         var minute: Int = 0
         var ampm = ""
