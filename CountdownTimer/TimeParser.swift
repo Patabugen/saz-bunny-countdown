@@ -32,11 +32,19 @@ struct TimeParser {
             }
             hour = h
             minute = m
-        } else if parts.count == 1 {
-            guard let h = Int(parts[0]), (0...23).contains(h) else {
+        } else if parts.count == 1, let num = Int(parts[0]) {
+            if num >= 100 && num <= 2359 {
+                // Bare 3-4 digit number: 520 -> 5:20, 1630 -> 16:30
+                hour = num / 100
+                minute = num % 100
+                guard (0...23).contains(hour), (0...59).contains(minute) else {
+                    return .failure("Invalid time format: \(input)")
+                }
+            } else if (0...23).contains(num) {
+                hour = num
+            } else {
                 return .failure("Invalid time format: \(input)")
             }
-            hour = h
         } else {
             return .failure("Invalid time format: \(input)")
         }

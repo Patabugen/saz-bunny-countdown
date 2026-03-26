@@ -17,8 +17,11 @@
 
 ### Added
 
+- Voice input: when launched without a time, shows "When should I finish?" and listens via microphone using on-device speech recognition
+- Handles both spoken digit times ("5:20") and word times ("five twenty")
 - Press Escape to dismiss the timer when the window is focused
 
 ### Fixed
 
 - URL scheme now correctly handles times with minutes (e.g., `countdown://5:20`) — previously the URL parser split host and port, dropping the minutes
+- Time parser now handles bare 3-4 digit numbers (e.g., `520` → 5:20, `1630` → 16:30) — fixes speech recognition transcribing "five twenty" as "520"
