@@ -1,91 +1,51 @@
 # Countdown Timer
 
-A minimal floating countdown timer for macOS. Tell it when you need to finish, and it stays visible in the corner of your screen until time's up.
+A minimal but pretty floating countdown timer for macOS. Tell it when you need to finish, and it stays on screen until time's up. No dock icon, no menu bar — just a small always-on-top widget.
 
-Runs as an invisible app — no dock icon, no menu bar. Just a small always-on-top widget.
+## Getting started
 
-## Requirements
-
-- macOS 13.0 or later
-- Xcode 15+ (to build from source)
-- Microphone permission (for voice input)
-
-## Building
+Requires macOS 13+. Build from source with Xcode 15+:
 
 ```bash
 xcodebuild -scheme CountdownTimer -destination 'platform=macOS' SYMROOT=build
 open build/Debug/CountdownTimer.app
 ```
 
-Or open `CountdownTimer.xcodeproj` in Xcode and press Cmd+R.
+Or just open `CountdownTimer.xcodeproj` in Xcode and hit Cmd+R.
 
-## Usage
+### 1. Tell it when to finish
 
-### Voice input
+Launch the app and it asks you one thing:
 
-Launch the app without any arguments. A small widget appears asking **"When should I finish?"** and starts listening. Say a time:
+<p align="center"><img src="screenshots/listening-active.png" width="320" /></p>
 
-- "five twenty"
-- "3:45 PM"
-- "nine o'clock"
-- "seven thirty"
-- "four PM"
+Just say a time out loud — "five twenty", "3:45 PM", "nine o'clock", whatever feels natural. Speech recognition runs entirely on-device.
 
-The app uses on-device speech recognition — nothing is sent to the cloud. It waits for 1.5 seconds of silence before processing your input.
+<p align="center"><img src="screenshots/listening-with-transcript.png" width="320" /></p>
 
-### URL scheme
-
-Set a timer from Terminal, scripts, or other apps:
+Don't feel like talking? You can also set a time from the terminal:
 
 ```bash
 open countdown://4:20
 open countdown://16:30
-open countdown://5
 ```
 
-### Siri / Shortcuts
+Or trigger it through Siri / Shortcuts if you can figure out how to get that working (Claude couldn't).
 
-The app registers with App Intents. You can trigger it from Shortcuts or say:
+### 2. Wait
 
-- "Start a countdown in CountdownTimer"
-- "Start CountdownTimer"
+The widget counts down in the corner of your screen. Click it to focus, click away to let it fade into the background.
 
-Siri will open the app in voice input mode. You can also create a Shortcut that passes a specific time to the "Countdown Timer" action.
+<p align="center">
+<img src="screenshots/countdown-focused.png" width="320" />&nbsp;&nbsp;
+<img src="screenshots/countdown-unfocused.png" width="320" />
+</p>
+
+When time's up, you'll hear a gentle chime and the digits change color. Hit **Quit** or the **X** button to dismiss.
 
 ### Time formats
 
-The parser accepts a wide range of formats:
-
-| Input | Interpreted as |
-|-------|---------------|
-| `4:20 PM` | 4:20 PM |
-| `4:20 AM` | 4:20 AM |
-| `16:20` | 4:20 PM (24-hour) |
-| `4:20` | Whichever of 4:20 AM/PM is nearest in the future |
-| `520` | 5:20 (bare digits) |
-| `1630` | 4:30 PM (bare digits, 24-hour) |
-| `4 PM` | 4:00 PM |
-| `4` | Whichever of 4 AM/PM is nearest in the future |
-
-When a time is ambiguous (no AM/PM and hour is 1-12), the app picks whichever occurrence is closest in the future. For example, if it's currently 2 PM and you say "4", it picks 4 PM today, not 4 AM tomorrow.
-
-If the resolved time falls between 10 PM and 9 AM, a confirmation dialog appears.
-
-### While the timer is running
-
-- The countdown displays as `H:MM:SS` or `MM:SS`
-- The target time is shown below (e.g. "until 4:20 PM")
-- When time's up, a gentle "Glass" sound plays and the digits change color
-- The timer stays visible until you dismiss it
-- Click **Quit** (or press Enter when focused) to dismiss and quit the app
-- Click the **X** button in the top-right corner to dismiss
-
-### Focus and appearance
-
-- Click the widget to focus it — a warm border appears
-- Click elsewhere to unfocus — the border fades
-- The widget remembers which screen it was on and returns there next launch
-- Re-opening the app while a timer is running focuses the existing widget instead of creating a new one
+The parser is pretty flexible — `4:20 PM`, `16:20`, `520`, `4 PM`, or just `4` all work. When a time is ambiguous (no AM/PM), it picks whichever is closest in the future. If you set something between 10 PM and 9 AM, it'll double-check with you first.
 
 ## Running tests
 
@@ -93,35 +53,10 @@ If the resolved time falls between 10 PM and 9 AM, a confirmation dialog appears
 xcodebuild test -scheme CountdownTimer -destination 'platform=macOS'
 ```
 
-The test suite includes:
-
-- **TimeParser** — format parsing, AM/PM resolution, night hours, invalid inputs
-- **SpeechTimeExtractor** — voice transcript to time string conversion
-- **URLTimeParser** — URL scheme parsing
-- **FloatingPanel** — focus state management
-- **Snapshots** — UI appearance for countdown and listening views (uses [swift-snapshot-testing](https://github.com/pointfreeco/swift-snapshot-testing))
-
-Snapshot tests record reference images on first run. If you change the UI, delete `CountdownTimerTests/__Snapshots__/` and run tests twice (first run records, second run verifies).
-
-## Project structure
-
-```
-CountdownTimer/
-  AppDelegate.swift          App lifecycle, window management, view routing
-  CountdownTimerApp.swift    @main entry point
-  FloatingPanel.swift        Borderless floating NSWindow + focus tracking
-  CountdownView.swift        Timer display (digits, target time, quit button)
-  ListeningView.swift        Voice input prompt
-  CountdownViewModel.swift   Timer logic, formatting, sound
-  SpeechRecognizer.swift     On-device speech recognition via SFSpeechRecognizer
-  TimeParser.swift           Time string parsing and AM/PM resolution
-  SpeechTimeExtractor.swift  Extracts time from natural speech transcripts
-  URLTimeParser.swift        Extracts time from countdown:// URLs
-  CountdownIntent.swift      Siri / Shortcuts integration
-  ClayTheme.swift            Visual constants (colors, dimensions, shadows)
-  Info.plist                 App configuration (LSUIElement, URL scheme, permissions)
-```
+Covers time parsing, speech extraction, URL scheme handling, focus state, and snapshot tests (via [swift-snapshot-testing](https://github.com/pointfreeco/swift-snapshot-testing)). Snapshot tests record reference images on first run — if you change the UI, delete `CountdownTimerTests/__Snapshots__/` and run tests twice.
 
 ## License
 
-Personal use.
+Personal use, commercial use. Do what you want with it. I'd love to hear from you if you do.
+
+No warranty, it's vibe-coded. :)
