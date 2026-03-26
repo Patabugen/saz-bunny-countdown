@@ -2,6 +2,7 @@ import Foundation
 import AppKit
 import Combine
 
+@MainActor
 class CountdownViewModel: ObservableObject {
     @Published var timeString: String = "00:00"
     @Published var targetTimeString: String?

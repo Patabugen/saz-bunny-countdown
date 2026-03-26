@@ -2,6 +2,7 @@ import Foundation
 import Speech
 import AVFoundation
 
+@MainActor
 class SpeechRecognizer: ObservableObject {
     @Published var transcript: String = ""
     @Published var isListening: Bool = false
@@ -18,7 +19,7 @@ class SpeechRecognizer: ObservableObject {
         self.onResult = onResult
 
         SFSpeechRecognizer.requestAuthorization { [weak self] status in
-            DispatchQueue.main.async {
+            Task { @MainActor [weak self] in
                 switch status {
                 case .authorized:
                     self?.beginRecording()
@@ -74,17 +75,15 @@ class SpeechRecognizer: ObservableObject {
         }
 
         recognitionTask = speechRecognizer?.recognitionTask(with: request) { [weak self] result, error in
-            guard let self = self else { return }
+            Task { @MainActor [weak self] in
+                guard let self = self else { return }
 
-            if let result = result {
-                DispatchQueue.main.async {
+                if let result = result {
                     self.transcript = result.bestTranscription.formattedString
                     self.resetSilenceTimer()
                 }
-            }
 
-            if error != nil || (result?.isFinal == true) {
-                DispatchQueue.main.async {
+                if error != nil || (result?.isFinal == true) {
                     self.finalize()
                 }
             }
@@ -94,7 +93,9 @@ class SpeechRecognizer: ObservableObject {
     private func resetSilenceTimer() {
         silenceTimer?.invalidate()
         silenceTimer = Timer.scheduledTimer(withTimeInterval: 1.5, repeats: false) { [weak self] _ in
-            self?.finalize()
+            Task { @MainActor [weak self] in
+                self?.finalize()
+            }
         }
     }
 

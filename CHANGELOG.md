@@ -25,6 +25,12 @@
 - Re-opening the app focuses the existing window instead of creating a new one
 - Press Escape to dismiss the timer when the window is focused
 
+### Changed
+
+- Applied Swift 6 best practices: `@MainActor` isolation on `AppDelegate`, `CountdownViewModel`, `SpeechRecognizer`, `CountdownView`, and `ListeningView`
+- Replaced `DispatchQueue.main.async` with `@MainActor`-isolated methods and `Task { @MainActor in }` for compiler-verified thread safety
+- Replaced `DispatchQueue.main.asyncAfter` timing hack with structured `Task.sleep`
+
 ### Fixed
 
 - URL scheme now correctly handles times with minutes (e.g., `countdown://5:20`) — previously the URL parser split host and port, dropping the minutes

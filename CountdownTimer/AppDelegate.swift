@@ -1,6 +1,7 @@
 import AppKit
 import SwiftUI
 
+@MainActor
 class AppDelegate: NSObject, NSApplicationDelegate {
     private var panel: FloatingPanel?
     let viewModel = CountdownViewModel()
@@ -10,10 +11,11 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     func applicationDidFinishLaunching(_ notification: Notification) {
         NSApp.setActivationPolicy(.accessory)
 
-        // Delay slightly to let URL handling run first
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) { [weak self] in
-            guard let self = self, !self.launchedWithURL else { return }
-            self.showListening()
+        Task {
+            try? await Task.sleep(for: .milliseconds(300))
+            if !launchedWithURL {
+                showListening()
+            }
         }
     }
 
@@ -30,7 +32,6 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         launchedWithURL = true
         guard let url = urls.first,
               url.scheme == "countdown" else { return }
-        // countdown://5:20 parses as host="5" port=20, so reconstruct the time string
         if let host = url.host {
             var timeString = host
             if let port = url.port {
@@ -103,7 +104,6 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     private func positionPanel() {
         guard let panel = panel else { return }
 
-        // Restore to last-used screen, or fall back to main screen
         let screen: NSScreen
         if let savedScreenNumber = UserDefaults.standard.object(forKey: "lastScreenNumber") as? Int,
            let matched = NSScreen.screens.first(where: { ($0.deviceDescription[NSDeviceDescriptionKey("NSScreenNumber")] as? Int) == savedScreenNumber }) {
@@ -126,7 +126,6 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     }
 
     private func handleSpeechResult(_ transcript: String) {
-        // Extract time-like patterns from natural speech
         let timeString = extractTime(from: transcript)
         handleTimeString(timeString)
     }
@@ -134,14 +133,11 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     private func extractTime(from transcript: String) -> String {
         let lower = transcript.lowercased()
 
-        // Try to find a time pattern in the speech (e.g., "5:20", "5:20 PM", "five twenty")
-        // First, check for digit-based times
         let digitPattern = #"(\d{1,2}:\d{2}\s*(?:am|pm|a\.m|p\.m)?|\d{1,2}\s*(?:am|pm|a\.m|p\.m))"#
         if let range = lower.range(of: digitPattern, options: .regularExpression) {
             return String(lower[range])
         }
 
-        // Word-to-number mapping for spoken times
         let wordNumbers: [String: Int] = [
             "one": 1, "two": 2, "three": 3, "four": 4, "five": 5,
             "six": 6, "seven": 7, "eight": 8, "nine": 9, "ten": 10,
@@ -171,13 +167,10 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         var minute: Int = 0
         var ampm = ""
 
-        // Check for AM/PM
         if lower.contains(" am") || lower.contains(" a.m") { ampm = "am" }
         if lower.contains(" pm") || lower.contains(" p.m") { ampm = "pm" }
 
-        // Try to find "hour minute" pattern in word numbers
         for i in 0..<words.count {
-            // Check for compound minutes first (e.g., "five twenty one")
             if hour != nil && i + 1 < words.count {
                 let twoWord = "\(words[i]) \(words[i + 1])"
                 if let m = compound[twoWord] {
@@ -203,27 +196,22 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             return "\(h)\(ampm.isEmpty ? "" : " \(ampm)")"
         }
 
-        // Fallback: return the raw transcript for the parser to attempt
         return transcript
     }
 
     private func showConfirmation(message: String, completion: @escaping (Bool) -> Void) {
-        DispatchQueue.main.async {
-            let alert = NSAlert()
-            alert.messageText = "Confirm Timer"
-            alert.informativeText = message
-            alert.addButton(withTitle: "Start")
-            alert.addButton(withTitle: "Cancel")
-            completion(alert.runModal() == .alertFirstButtonReturn)
-        }
+        let alert = NSAlert()
+        alert.messageText = "Confirm Timer"
+        alert.informativeText = message
+        alert.addButton(withTitle: "Start")
+        alert.addButton(withTitle: "Cancel")
+        completion(alert.runModal() == .alertFirstButtonReturn)
     }
 
     private func showError(_ message: String) {
-        DispatchQueue.main.async {
-            let alert = NSAlert()
-            alert.messageText = "Error"
-            alert.informativeText = message
-            alert.runModal()
-        }
+        let alert = NSAlert()
+        alert.messageText = "Error"
+        alert.informativeText = message
+        alert.runModal()
     }
 }

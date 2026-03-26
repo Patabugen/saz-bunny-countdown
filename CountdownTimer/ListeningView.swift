@@ -1,5 +1,6 @@
 import SwiftUI
 
+@MainActor
 struct ListeningView: View {
     @ObservedObject var speechRecognizer: SpeechRecognizer
     let onDismiss: () -> Void

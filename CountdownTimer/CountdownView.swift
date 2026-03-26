@@ -1,5 +1,6 @@
 import SwiftUI
 
+@MainActor
 struct CountdownView: View {
     @ObservedObject var viewModel: CountdownViewModel
     let onDismiss: () -> Void
