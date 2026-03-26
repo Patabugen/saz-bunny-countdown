@@ -11,9 +11,15 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
     func application(_ application: NSApplication, open urls: [URL]) {
         guard let url = urls.first,
-              url.scheme == "countdown",
-              let host = url.host else { return }
-        handleTimeString(host)
+              url.scheme == "countdown" else { return }
+        // countdown://5:20 parses as host="5" port=20, so reconstruct the time string
+        if let host = url.host {
+            var timeString = host
+            if let port = url.port {
+                timeString += ":\(port)"
+            }
+            handleTimeString(timeString)
+        }
     }
 
     func handleTimeString(_ timeString: String) {
