@@ -3,6 +3,7 @@ import SwiftUI
 @MainActor
 struct ListeningView: View {
     @ObservedObject var speechRecognizer: SpeechRecognizer
+    @ObservedObject var focusState: PanelFocusState
     let onDismiss: () -> Void
 
     var body: some View {
@@ -11,7 +12,10 @@ struct ListeningView: View {
                 .fill(.ultraThinMaterial)
                 .overlay(
                     RoundedRectangle(cornerRadius: 12)
-                        .stroke(Color.white.opacity(0.2), lineWidth: 1)
+                        .strokeBorder(
+                            focusState.isFocused ? Color.accentColor.opacity(0.8) : Color.white.opacity(0.2),
+                            lineWidth: focusState.isFocused ? 2 : 1
+                        )
                 )
 
             VStack(spacing: 6) {
@@ -48,5 +52,6 @@ struct ListeningView: View {
             .padding(8)
         }
         .frame(width: 240, height: 80)
+        .animation(.easeInOut(duration: 0.15), value: focusState.isFocused)
     }
 }

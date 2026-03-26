@@ -30,6 +30,10 @@
 - Applied Swift 6 best practices: `@MainActor` isolation on `AppDelegate`, `CountdownViewModel`, `SpeechRecognizer`, `CountdownView`, and `ListeningView`
 - Replaced `DispatchQueue.main.async` with `@MainActor`-isolated methods and `Task { @MainActor in }` for compiler-verified thread safety
 - Replaced `DispatchQueue.main.asyncAfter` timing hack with structured `Task.sleep`
+- Esc and Space now only work when the timer panel is focused (click to focus)
+- Accent-colored border appears when the panel is focused, fades when unfocused
+- "Esc to quit, Space to restart" hint only shown when focused
+- Escape now fully terminates the app (not just hides the window)
 
 ### Fixed
 

@@ -3,6 +3,7 @@ import SwiftUI
 @MainActor
 struct CountdownView: View {
     @ObservedObject var viewModel: CountdownViewModel
+    @ObservedObject var focusState: PanelFocusState
     let onDismiss: () -> Void
 
     var body: some View {
@@ -11,7 +12,10 @@ struct CountdownView: View {
                 .fill(.ultraThinMaterial)
                 .overlay(
                     RoundedRectangle(cornerRadius: 12)
-                        .stroke(Color.white.opacity(0.2), lineWidth: 1)
+                        .strokeBorder(
+                            focusState.isFocused ? Color.accentColor.opacity(0.8) : Color.white.opacity(0.2),
+                            lineWidth: focusState.isFocused ? 2 : 1
+                        )
                 )
 
             VStack(spacing: 2) {
@@ -25,9 +29,11 @@ struct CountdownView: View {
                         .foregroundColor(.secondary)
                 }
 
-                Text("Esc to quit, Space to restart")
-                    .font(.system(size: 10))
-                    .foregroundColor(.secondary.opacity(0.6))
+                if focusState.isFocused {
+                    Text("Esc to quit, Space to restart")
+                        .font(.system(size: 10))
+                        .foregroundColor(.secondary.opacity(0.6))
+                }
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
 
@@ -40,5 +46,6 @@ struct CountdownView: View {
             .padding(8)
         }
         .frame(width: 240, height: 80)
+        .animation(.easeInOut(duration: 0.15), value: focusState.isFocused)
     }
 }

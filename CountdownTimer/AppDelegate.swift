@@ -60,8 +60,9 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     func showListening() {
         speechRecognizer.transcript = ""
         speechRecognizer.error = nil
+        ensurePanel()
 
-        let view = ListeningView(speechRecognizer: speechRecognizer) { [weak self] in
+        let view = ListeningView(speechRecognizer: speechRecognizer, focusState: panel!.focusState) { [weak self] in
             self?.dismissTimer()
         }
         showPanel(content: view)
@@ -74,8 +75,9 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     func showTimer(targetDate: Date) {
         speechRecognizer.stopListening()
         viewModel.start(targetDate: targetDate)
+        ensurePanel()
 
-        let view = CountdownView(viewModel: viewModel) { [weak self] in
+        let view = CountdownView(viewModel: viewModel, focusState: panel!.focusState) { [weak self] in
             self?.dismissTimer()
         }
         showPanel(content: view)
@@ -87,15 +89,18 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         speechRecognizer.stopListening()
         panel?.orderOut(nil)
         panel = nil
+        NSApp.terminate(nil)
+    }
+
+    private func ensurePanel() {
+        if panel == nil {
+            panel = FloatingPanel(contentView: NSView())
+        }
     }
 
     private func showPanel<V: View>(content: V) {
         let hostingView = NSHostingView(rootView: content)
-        if let panel = panel {
-            panel.contentView = hostingView
-        } else {
-            panel = FloatingPanel(contentView: hostingView)
-        }
+        panel?.contentView = hostingView
         positionPanel()
         panel?.orderFront(nil)
         panel?.makeKey()
