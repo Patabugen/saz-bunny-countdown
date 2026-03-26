@@ -13,7 +13,7 @@ struct CountdownView: View {
                         .stroke(Color.white.opacity(0.2), lineWidth: 1)
                 )
 
-            VStack(spacing: 4) {
+            VStack(spacing: 2) {
                 Text(viewModel.timeString)
                     .font(.system(size: 28, weight: .medium, design: .monospaced))
                     .foregroundColor(viewModel.isFinished ? .red : .primary)
@@ -23,6 +23,10 @@ struct CountdownView: View {
                         .font(.system(size: 12))
                         .foregroundColor(.secondary)
                 }
+
+                Text("Esc to quit, Space to restart")
+                    .font(.system(size: 10))
+                    .foregroundColor(.secondary.opacity(0.6))
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
 
@@ -35,9 +39,5 @@ struct CountdownView: View {
             .padding(8)
         }
         .frame(width: 240, height: 80)
-        .contentShape(Rectangle())
-        .onTapGesture {
-            onDismiss()
-        }
     }
 }

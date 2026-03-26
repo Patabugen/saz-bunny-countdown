@@ -19,6 +19,10 @@
 
 - Voice input: when launched without a time, shows "When should I finish?" and listens via microphone using on-device speech recognition
 - Handles both spoken digit times ("5:20") and word times ("five twenty")
+- Timer remembers which screen it was on and re-appears there on next launch
+- Press Space to restart with voice input while a timer is running
+- Hint text "Esc to quit, Space to restart" shown on the countdown view
+- Re-opening the app focuses the existing window instead of creating a new one
 - Press Escape to dismiss the timer when the window is focused
 
 ### Fixed

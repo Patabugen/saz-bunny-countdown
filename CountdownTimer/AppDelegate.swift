@@ -17,6 +17,15 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         }
     }
 
+    func applicationShouldHandleReopen(_ sender: NSApplication, hasVisibleWindows flag: Bool) -> Bool {
+        if let panel = panel, panel.isVisible {
+            panel.makeKeyAndOrderFront(nil)
+        } else {
+            showListening()
+        }
+        return true
+    }
+
     func application(_ application: NSApplication, open urls: [URL]) {
         launchedWithURL = true
         guard let url = urls.first,
@@ -72,6 +81,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     }
 
     func dismissTimer() {
+        saveCurrentScreen()
         viewModel.stop()
         speechRecognizer.stopListening()
         panel?.orderOut(nil)
@@ -87,14 +97,32 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         }
         positionPanel()
         panel?.orderFront(nil)
+        panel?.makeKey()
     }
 
     private func positionPanel() {
-        guard let panel = panel, let screen = NSScreen.main else { return }
+        guard let panel = panel else { return }
+
+        // Restore to last-used screen, or fall back to main screen
+        let screen: NSScreen
+        if let savedScreenNumber = UserDefaults.standard.object(forKey: "lastScreenNumber") as? Int,
+           let matched = NSScreen.screens.first(where: { ($0.deviceDescription[NSDeviceDescriptionKey("NSScreenNumber")] as? Int) == savedScreenNumber }) {
+            screen = matched
+        } else {
+            screen = NSScreen.main ?? NSScreen.screens[0]
+        }
+
         let visibleFrame = screen.visibleFrame
         let x = visibleFrame.maxX - panel.frame.width - 16
         let y = visibleFrame.maxY - panel.frame.height - 16
         panel.setFrameOrigin(NSPoint(x: x, y: y))
+    }
+
+    private func saveCurrentScreen() {
+        guard let panel = panel, let screen = panel.screen else { return }
+        if let screenNumber = screen.deviceDescription[NSDeviceDescriptionKey("NSScreenNumber")] as? Int {
+            UserDefaults.standard.set(screenNumber, forKey: "lastScreenNumber")
+        }
     }
 
     private func handleSpeechResult(_ transcript: String) {
