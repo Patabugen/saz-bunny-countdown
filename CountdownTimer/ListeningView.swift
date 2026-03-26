@@ -51,7 +51,6 @@ struct ListeningView: View {
             .buttonStyle(.plain)
             .padding(8)
         }
-        .frame(width: 240, height: 80)
-        .animation(.easeInOut(duration: 0.15), value: focusState.isFocused)
+        .frame(width: 240, height: 100)
     }
 }

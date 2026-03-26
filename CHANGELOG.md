@@ -34,6 +34,9 @@
 - Accent-colored border appears when the panel is focused, fades when unfocused
 - "Esc to quit, Space to restart" hint only shown when focused
 - Escape now fully terminates the app (not just hides the window)
+- Fixed: keyboard shortcuts now actually work — clicking the panel temporarily activates the app so it can receive key events, then reverts to accessory mode when unfocused
+- Replaced keyboard shortcuts with a visible "Quit" button below the timer (Enter to activate)
+- Removed Escape key handling (unreliable in accessory/floating window context)
 
 ### Fixed
 

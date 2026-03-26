@@ -9,8 +9,6 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     private var launchedWithURL = false
 
     func applicationDidFinishLaunching(_ notification: Notification) {
-        NSApp.setActivationPolicy(.accessory)
-
         Task {
             try? await Task.sleep(for: .milliseconds(300))
             if !launchedWithURL {

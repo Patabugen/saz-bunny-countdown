@@ -18,7 +18,7 @@ struct CountdownView: View {
                         )
                 )
 
-            VStack(spacing: 2) {
+            VStack(spacing: 4) {
                 Text(viewModel.timeString)
                     .font(.system(size: 28, weight: .medium, design: .monospaced))
                     .foregroundColor(viewModel.isFinished ? .red : .primary)
@@ -29,11 +29,17 @@ struct CountdownView: View {
                         .foregroundColor(.secondary)
                 }
 
-                if focusState.isFocused {
-                    Text("Esc to quit, Space to restart")
-                        .font(.system(size: 10))
-                        .foregroundColor(.secondary.opacity(0.6))
+                Button(action: onDismiss) {
+                    Text("Quit")
+                        .font(.system(size: 11, weight: .medium))
+                        .foregroundColor(.white)
+                        .padding(.horizontal, 16)
+                        .padding(.vertical, 3)
+                        .background(Color.accentColor.opacity(0.8))
+                        .cornerRadius(4)
                 }
+                .buttonStyle(.plain)
+                .keyboardShortcut(.return, modifiers: [])
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
 
@@ -45,7 +51,7 @@ struct CountdownView: View {
             .buttonStyle(.plain)
             .padding(8)
         }
-        .frame(width: 240, height: 80)
+        .frame(width: 240, height: 100)
         .animation(.easeInOut(duration: 0.15), value: focusState.isFocused)
     }
 }
