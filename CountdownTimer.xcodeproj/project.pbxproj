@@ -17,6 +17,13 @@
 		AA0000000000000000002008 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AA0000000000000000001008 /* Assets.xcassets */; };
 		AA0000000000000000002009 /* SpeechRecognizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA000000000000000000100B /* SpeechRecognizer.swift */; };
 		AA000000000000000000200A /* ListeningView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA000000000000000000100C /* ListeningView.swift */; };
+		AA000000000000000000200B /* SpeechTimeExtractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA000000000000000000100D /* SpeechTimeExtractor.swift */; };
+		AA000000000000000000200C /* URLTimeParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA000000000000000000100E /* URLTimeParser.swift */; };
+		BB0000000000000000002001 /* TimeParserTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB0000000000000000001001 /* TimeParserTests.swift */; };
+		BB0000000000000000002002 /* SpeechTimeExtractorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB0000000000000000001002 /* SpeechTimeExtractorTests.swift */; };
+		BB0000000000000000002003 /* URLTimeParserTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB0000000000000000001003 /* URLTimeParserTests.swift */; };
+		BB0000000000000000002004 /* SnapshotTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB0000000000000000001004 /* SnapshotTests.swift */; };
+		BB0000000000000000002005 /* SnapshotTesting in Frameworks */ = {isa = PBXBuildFile; productRef = BB0000000000000000003001 /* SnapshotTesting */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -33,13 +40,38 @@
 		AA000000000000000000100A /* CountdownTimer.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = CountdownTimer.entitlements; sourceTree = "<group>"; };
 		AA000000000000000000100B /* SpeechRecognizer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpeechRecognizer.swift; sourceTree = "<group>"; };
 		AA000000000000000000100C /* ListeningView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListeningView.swift; sourceTree = "<group>"; };
+		AA000000000000000000100D /* SpeechTimeExtractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpeechTimeExtractor.swift; sourceTree = "<group>"; };
+		AA000000000000000000100E /* URLTimeParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLTimeParser.swift; sourceTree = "<group>"; };
+		BB0000000000000000000301 /* CountdownTimerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CountdownTimerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		BB0000000000000000001001 /* TimeParserTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeParserTests.swift; sourceTree = "<group>"; };
+		BB0000000000000000001002 /* SpeechTimeExtractorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpeechTimeExtractorTests.swift; sourceTree = "<group>"; };
+		BB0000000000000000001003 /* URLTimeParserTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLTimeParserTests.swift; sourceTree = "<group>"; };
+		BB0000000000000000001004 /* SnapshotTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SnapshotTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
+
+/* Begin PBXContainerItemProxy section */
+		BB0000000000000000004001 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = AA0000000000000000000100 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = AA0000000000000000000300;
+			remoteInfo = CountdownTimer;
+		};
+/* End PBXContainerItemProxy section */
 
 /* Begin PBXFrameworksBuildPhase section */
 		AA0000000000000000000401 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		BB0000000000000000000401 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BB0000000000000000002005 /* SnapshotTesting in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -50,6 +82,7 @@
 			isa = PBXGroup;
 			children = (
 				AA0000000000000000000201 /* CountdownTimer */,
+				BB0000000000000000000201 /* CountdownTimerTests */,
 				AA0000000000000000000202 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -66,6 +99,8 @@
 				AA0000000000000000001007 /* TimeParser.swift */,
 				AA000000000000000000100B /* SpeechRecognizer.swift */,
 				AA000000000000000000100C /* ListeningView.swift */,
+				AA000000000000000000100D /* SpeechTimeExtractor.swift */,
+				AA000000000000000000100E /* URLTimeParser.swift */,
 				AA0000000000000000001008 /* Assets.xcassets */,
 				AA0000000000000000001009 /* Info.plist */,
 				AA000000000000000000100A /* CountdownTimer.entitlements */,
@@ -77,8 +112,20 @@
 			isa = PBXGroup;
 			children = (
 				AA0000000000000000000301 /* CountdownTimer.app */,
+				BB0000000000000000000301 /* CountdownTimerTests.xctest */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		BB0000000000000000000201 /* CountdownTimerTests */ = {
+			isa = PBXGroup;
+			children = (
+				BB0000000000000000001001 /* TimeParserTests.swift */,
+				BB0000000000000000001002 /* SpeechTimeExtractorTests.swift */,
+				BB0000000000000000001003 /* URLTimeParserTests.swift */,
+				BB0000000000000000001004 /* SnapshotTests.swift */,
+			);
+			path = CountdownTimerTests;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -101,6 +148,26 @@
 			productReference = AA0000000000000000000301 /* CountdownTimer.app */;
 			productType = "com.apple.product-type.application";
 		};
+		BB0000000000000000000300 /* CountdownTimerTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = BB0000000000000000000600 /* Build configuration list for PBXNativeTarget "CountdownTimerTests" */;
+			buildPhases = (
+				BB0000000000000000000400 /* Sources */,
+				BB0000000000000000000401 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				BB0000000000000000004002 /* PBXTargetDependency */,
+			);
+			name = CountdownTimerTests;
+			packageProductDependencies = (
+				BB0000000000000000003001 /* SnapshotTesting */,
+			);
+			productName = CountdownTimerTests;
+			productReference = BB0000000000000000000301 /* CountdownTimerTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -113,6 +180,10 @@
 				TargetAttributes = {
 					AA0000000000000000000300 = {
 						CreatedOnToolsVersion = 15.0;
+					};
+					BB0000000000000000000300 = {
+						CreatedOnToolsVersion = 15.0;
+						TestTargetID = AA0000000000000000000300;
 					};
 				};
 			};
@@ -128,8 +199,12 @@
 			productRefGroup = AA0000000000000000000202 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
+			packageReferences = (
+				BB0000000000000000005001 /* XCRemoteSwiftPackageReference "swift-snapshot-testing" */,
+			);
 			targets = (
 				AA0000000000000000000300 /* CountdownTimer */,
+				BB0000000000000000000300 /* CountdownTimerTests */,
 			);
 		};
 /* End PBXProject section */
@@ -145,6 +220,14 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXTargetDependency section */
+		BB0000000000000000004002 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = AA0000000000000000000300 /* CountdownTimer */;
+			targetProxy = BB0000000000000000004001 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
 /* Begin PBXSourcesBuildPhase section */
 		AA0000000000000000000400 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
@@ -159,6 +242,19 @@
 				AA0000000000000000002007 /* TimeParser.swift in Sources */,
 				AA0000000000000000002009 /* SpeechRecognizer.swift in Sources */,
 				AA000000000000000000200A /* ListeningView.swift in Sources */,
+				AA000000000000000000200B /* SpeechTimeExtractor.swift in Sources */,
+				AA000000000000000000200C /* URLTimeParser.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		BB0000000000000000000400 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BB0000000000000000002001 /* TimeParserTests.swift in Sources */,
+				BB0000000000000000002002 /* SpeechTimeExtractorTests.swift in Sources */,
+				BB0000000000000000002003 /* URLTimeParserTests.swift in Sources */,
+				BB0000000000000000002004 /* SnapshotTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -323,6 +419,38 @@
 			};
 			name = Release;
 		};
+		BB0000000000000000000601 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.local.countdowntimer.tests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/CountdownTimer.app/Contents/MacOS/CountdownTimer";
+			};
+			name = Debug;
+		};
+		BB0000000000000000000602 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.local.countdowntimer.tests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/CountdownTimer.app/Contents/MacOS/CountdownTimer";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -344,7 +472,35 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
+		BB0000000000000000000600 /* Build configuration list for PBXNativeTarget "CountdownTimerTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				BB0000000000000000000601 /* Debug */,
+				BB0000000000000000000602 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		BB0000000000000000005001 /* XCRemoteSwiftPackageReference "swift-snapshot-testing" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/pointfreeco/swift-snapshot-testing";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.17.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		BB0000000000000000003001 /* SnapshotTesting */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = BB0000000000000000005001 /* XCRemoteSwiftPackageReference "swift-snapshot-testing" */;
+			productName = SnapshotTesting;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = AA0000000000000000000100 /* Project object */;
 }

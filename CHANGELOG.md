@@ -1,5 +1,20 @@
 # Changelog
 
+## 1.1.0 — 2026-03-26
+
+### Added
+
+- Test suite using Swift Testing framework with 4 test suites:
+  - TimeParser tests: standard formats, bare numbers, AM/PM edge cases, ambiguous resolution, night hours confirmation, invalid inputs
+  - SpeechTimeExtractor tests: digit patterns, word numbers, compound words, AM/PM handling, passthrough
+  - URLTimeParser tests: hour-only, hour:minute (host+port reconstruction), 24-hour, invalid schemes
+  - UI snapshot tests using swift-snapshot-testing: focused/unfocused countdown view, listening view states
+
+### Changed
+
+- Extracted `SpeechTimeExtractor` struct from AppDelegate for testability
+- Extracted `URLTimeParser` struct from AppDelegate for testability
+
 ## 1.0.0 — 2026-03-26
 
 ### Features
