@@ -36,6 +36,7 @@ class FloatingPanel: NSWindow {
     }
 }
 
+@MainActor
 class PanelFocusState: ObservableObject {
     @Published var isFocused = false
 }

@@ -44,6 +44,8 @@ class CountdownViewModel: ObservableObject {
             timeString = "00:00"
             if !isFinished {
                 isFinished = true
+                timer?.cancel()
+                timer = nil
                 playSound()
             }
             return

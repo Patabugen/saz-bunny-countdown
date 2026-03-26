@@ -19,12 +19,10 @@ struct CountdownIntent: AppIntent {
             throw CountdownError.appNotReady
         }
 
-        // Delegate to app delegate which handles confirmation dialogs for night hours
-        appDelegate.handleTimeString(time)
-
         let result = TimeParser.parse(time)
         switch result {
         case .success(let date), .needsConfirmation(let date, _):
+            appDelegate.handleTimeString(time)
             return .result(dialog: "Countdown to \(formatted(date))")
         case .failure(let message):
             throw CountdownError.invalidTime(message)

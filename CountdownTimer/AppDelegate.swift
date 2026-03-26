@@ -54,7 +54,8 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         speechRecognizer.error = nil
         ensurePanel()
 
-        let view = ListeningView(speechRecognizer: speechRecognizer, focusState: panel!.focusState) { [weak self] in
+        guard let panel = panel else { return }
+        let view = ListeningView(speechRecognizer: speechRecognizer, focusState: panel.focusState) { [weak self] in
             self?.dismissTimer()
         }
         showPanel(content: view)
@@ -69,7 +70,8 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         viewModel.start(targetDate: targetDate)
         ensurePanel()
 
-        let view = CountdownView(viewModel: viewModel, focusState: panel!.focusState) { [weak self] in
+        guard let panel = panel else { return }
+        let view = CountdownView(viewModel: viewModel, focusState: panel.focusState) { [weak self] in
             self?.dismissTimer()
         }
         showPanel(content: view)
@@ -106,7 +108,8 @@ class AppDelegate: NSObject, NSApplicationDelegate {
            let matched = NSScreen.screens.first(where: { ($0.deviceDescription[NSDeviceDescriptionKey("NSScreenNumber")] as? Int) == savedScreenNumber }) {
             screen = matched
         } else {
-            screen = NSScreen.main ?? NSScreen.screens[0]
+            guard let fallback = NSScreen.main ?? NSScreen.screens.first else { return }
+            screen = fallback
         }
 
         let visibleFrame = screen.visibleFrame

@@ -8,7 +8,7 @@ class SpeechRecognizer: ObservableObject {
     @Published var isListening: Bool = false
     @Published var error: String?
 
-    private let speechRecognizer = SFSpeechRecognizer(locale: Locale(identifier: "en-US"))
+    private let speechRecognizer = SFSpeechRecognizer(locale: Locale(identifier: "en-GB"))
     private var recognitionRequest: SFSpeechAudioBufferRecognitionRequest?
     private var recognitionTask: SFSpeechRecognitionTask?
     private let audioEngine = AVAudioEngine()
