@@ -14,8 +14,9 @@ Tell me when your focus session finishes and I'll show you a timer which stays o
 4. When time's up, I'll make a a gentle chime and change the digits change color.
 5. Hit **Quit** or the **X** button to dismiss.
 
-<img src="screenshots/listening-active.png" width="320" />
-<img src="screenshots/countdown-unfocused.png" width="320" />
+<img src="screenshots/listening.png" width="320" />
+<img src="screenshots/countdown.png" width="320" />
+<img src="screenshots/expired.png" width="320" />
 
 Don't feel like talking? You can also set a time from the terminal:
 
