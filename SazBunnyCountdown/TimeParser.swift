@@ -95,13 +95,13 @@ struct TimeParser {
         let calendar = Calendar.current
         let now = Date()
         let currentHour = calendar.component(.hour, from: now)
-        let nextWholeHour = (currentHour + 1) % 24
 
         var targetHour: Int
         var targetMinute: Int
 
         if direction == "past" {
-            targetHour = nextWholeHour
+            // "20 past" = currentHour:20 (advances if already passed)
+            targetHour = currentHour
             targetMinute = minutes
         } else {
             // "10 to" the next hour = currentHour:(60 - 10)
