@@ -10,11 +10,12 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     private var launchedWithURL = false
 
     func applicationDidFinishLaunching(_ notification: Notification) {
-        Task {
-            try? await Task.sleep(for: .milliseconds(300))
-            if !launchedWithURL {
-                showListening()
-            }
+        // application(_:open:) is delivered on the same run loop iteration
+        // as didFinishLaunching when the app is launched via URL. Deferring
+        // to the next cycle ensures the URL handler has already fired.
+        DispatchQueue.main.async { [weak self] in
+            guard let self, !self.launchedWithURL else { return }
+            self.showListening()
         }
     }
 
