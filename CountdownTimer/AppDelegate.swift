@@ -78,9 +78,12 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         ensurePanel()
 
         guard let panel = panel else { return }
-        let view = CountdownView(viewModel: viewModel, focusState: panel.focusState) { [weak self] in
+        let view = CountdownView(viewModel: viewModel, focusState: panel.focusState, onDismiss: { [weak self] in
             self?.dismissTimer()
-        }.environmentObject(themeManager)
+        }, onStartNew: { [weak self] in
+            self?.viewModel.stop()
+            self?.showListening()
+        }).environmentObject(themeManager)
         showPanel(content: view)
     }
 
@@ -139,7 +142,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
     private func showConfirmation(message: String, completion: @escaping (Bool) -> Void) {
         let alert = NSAlert()
-        alert.messageText = "Confirm Timer"
+        alert.messageText = "Saz Bunny Countdown"
         alert.informativeText = message
         alert.addButton(withTitle: "Start")
         alert.addButton(withTitle: "Cancel")

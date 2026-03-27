@@ -6,6 +6,7 @@ struct CountdownView: View {
     @ObservedObject var focusState: PanelFocusState
     @EnvironmentObject var themeManager: ThemeManager
     let onDismiss: () -> Void
+    let onStartNew: () -> Void
 
     private var t: Theme { themeManager.active }
     private var isSazBunny: Bool { themeManager.activeStyle.usesBunnyImagery }
@@ -100,9 +101,18 @@ struct CountdownView: View {
                     .keyboardShortcut(.return, modifiers: [])
 
                     if viewModel.isFinished {
-                        Text("Time's up!")
-                            .font(.system(size: 12, weight: .semibold, design: .rounded))
-                            .foregroundStyle(t.textExpiredLabel ?? t.finishedAlert)
+                        Button(action: onStartNew) {
+                            Text("Start New")
+                                .font(.system(size: 13, weight: .semibold, design: .rounded))
+                                .foregroundStyle(t.buttonText)
+                                .padding(.horizontal, 16)
+                                .padding(.vertical, 5)
+                                .background(
+                                    Capsule()
+                                        .fill(t.accent)
+                                )
+                        }
+                        .buttonStyle(.plain)
                     } else if let target = viewModel.targetTimeString {
                         Text("until \(target)")
                             .font(.system(size: 12, weight: .medium, design: .rounded))
@@ -163,7 +173,21 @@ struct CountdownView: View {
             Spacer()
 
             HStack {
-                if let target = viewModel.targetTimeString {
+                if viewModel.isFinished {
+                    Button(action: onStartNew) {
+                        Text("Start New")
+                            .font(.system(size: 12, weight: .semibold, design: .rounded))
+                            .foregroundStyle(t.buttonText)
+                            .padding(.horizontal, 20)
+                            .padding(.vertical, 5)
+                            .background(
+                                Capsule()
+                                    .fill(t.buttonFill)
+                                    .shadow(color: t.outerShadowColor, radius: 3, x: 1, y: 2)
+                            )
+                    }
+                    .buttonStyle(.plain)
+                } else if let target = viewModel.targetTimeString {
                     Text("until \(target)")
                         .font(.system(size: 12, weight: .medium, design: .rounded))
                         .foregroundStyle(t.textSecondary)
