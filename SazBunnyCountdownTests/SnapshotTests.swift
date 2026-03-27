@@ -2,7 +2,7 @@ import Testing
 import SnapshotTesting
 import SwiftUI
 import AppKit
-@testable import CountdownTimer
+@testable import SazBunnyCountdown
 
 @MainActor
 @Suite("UI Snapshots")

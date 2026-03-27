@@ -1,5 +1,5 @@
 import Testing
-@testable import CountdownTimer
+@testable import SazBunnyCountdown
 import Foundation
 
 @Suite("TimeParser")

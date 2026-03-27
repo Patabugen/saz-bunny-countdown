@@ -1,6 +1,6 @@
 import Testing
 import AppKit
-@testable import CountdownTimer
+@testable import SazBunnyCountdown
 
 @MainActor
 @Suite("FloatingPanel")

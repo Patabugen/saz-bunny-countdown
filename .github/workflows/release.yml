@@ -9,7 +9,7 @@ permissions:
 
 jobs:
   build:
-    name: Build Saz-Bunny.app
+    name: Build Saz-Bunny-Countdown.app
     runs-on: macos-15
 
     steps:
@@ -27,7 +27,8 @@ jobs:
       - name: Build release
         run: |
           xcodebuild \
-            -scheme CountdownTimer \
+            -project SazBunnyCountdown.xcodeproj \
+            -scheme SazBunnyCountdown \
             -configuration Release \
             -destination 'platform=macOS' \
             -derivedDataPath build \
@@ -37,29 +38,29 @@ jobs:
 
       - name: Package app
         run: |
-          APP_PATH="build/Build/Products/Release/CountdownTimer.app"
+          APP_PATH="build/Build/Products/Release/SazBunnyCountdown.app"
 
           if [ ! -d "$APP_PATH" ]; then
-            echo "::error::CountdownTimer.app not found at $APP_PATH"
+            echo "::error::SazBunnyCountdown.app not found at $APP_PATH"
             find build -name "*.app" -type d
             exit 1
           fi
 
-          cp -R "$APP_PATH" "Saz-Bunny.app"
+          cp -R "$APP_PATH" "Saz-Bunny-Countdown.app"
 
           # Ad-hoc sign the full bundle (seals resources so Gatekeeper accepts it)
-          codesign --force --deep --sign - "Saz-Bunny.app"
-          codesign --verify --verbose "Saz-Bunny.app"
+          codesign --force --deep --sign - "Saz-Bunny-Countdown.app"
+          codesign --verify --verbose "Saz-Bunny-Countdown.app"
 
-          ditto -c -k --sequesterRsrc --keepParent "Saz-Bunny.app" "Saz-Bunny.zip"
+          ditto -c -k --sequesterRsrc --keepParent "Saz-Bunny-Countdown.app" "Saz-Bunny-Countdown.zip"
 
           echo "Package created:"
-          ls -lh Saz-Bunny.zip
+          ls -lh Saz-Bunny-Countdown.zip
 
       - name: Upload to release
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
           gh release upload "${{ github.event.release.tag_name }}" \
-            Saz-Bunny.zip \
+            Saz-Bunny-Countdown.zip \
             --clobber
