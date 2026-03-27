@@ -46,24 +46,11 @@ struct PanelChrome<Content: View>: View {
 
             content
 
-            // Top-right controls
-            HStack(spacing: 6) {
-                Menu {
-                    ThemePickerMenu()
-                } label: {
-                    Image(systemName: "paintbrush.fill")
-                        .font(.system(size: 12, weight: .medium))
-                        .foregroundStyle(t.shadow.opacity(0.4))
-                }
-                .menuStyle(.borderlessButton)
-                .fixedSize()
-
-                closeButton
-            }
-            .padding(10)
+            // Top-right close button
+            closeButton
+                .padding(10)
         }
         .frame(width: WindowConstants.width, height: WindowConstants.height)
-        .contextMenu { ThemePickerMenu() }
     }
 
     @ViewBuilder
