@@ -30,19 +30,26 @@ Speech recognition runs entirely on-device. The app doesn't track anaything or n
  
 # Installation
 
-Download the latest `Saz-Bunny.zip` from the [Releases](https://github.com/Patabugen/saz-bunny-countdown/releases) page, unzip it, and drag `Saz-Bunny.app` to your Applications folder.
+Download the latest `Saz-Bunny-Countdown.zip` from the [Releases](https://github.com/Patabugen/saz-bunny-countdown/releases) page and unzip it.
 
-**First launch:** Since the app isn't signed with an Apple Developer certificate, macOS will show a security warning. Right-click the app, choose **Open**, then click **Open** again in the dialog. You only need to do this once.
+**First launch:** The app isn't signed with an Apple Developer certificate, so macOS will block it. If you trust the developer, you can bypass the check.
 
-Requires macOS 13+.
+To allow it, either:
+
+- **Terminal** — run `xattr -cr ~/Downloads/Saz-Bunny-Countdown.app` then open the app normally, or
+- **System Settings** — try opening the app (it will be blocked), then go to **System Settings > Privacy & Security**, scroll down to Security, and click **Open Anyway**.
+
+<img src="screenshots/privacy-and-security.png" width="480" />
+
+You only need to do this once. Requires macOS 13+.
 
 ### Building from source
 
-Open `CountdownTimer.xcodeproj` in Xcode 15+ and hit Cmd+R, or:
+Open `SazBunnyCountdown.xcodeproj` in Xcode 15+ and hit Cmd+R, or:
 
 ```bash
-xcodebuild -scheme CountdownTimer -destination 'platform=macOS' SYMROOT=build
-open build/Debug/CountdownTimer.app
+xcodebuild -scheme SazBunnyCountdown -destination 'platform=macOS' SYMROOT=build
+open build/Debug/SazBunnyCountdown.app
 ```
 
 ### Time formats
@@ -52,10 +59,10 @@ The parser is pretty flexible — `4:20 PM`, `16:20`, `520`, `4 PM`, or just `4`
 ## Running tests
 
 ```bash
-xcodebuild test -scheme CountdownTimer -destination 'platform=macOS'
+xcodebuild test -scheme SazBunnyCountdown -destination 'platform=macOS'
 ```
 
-Covers time parsing, speech extraction, URL scheme handling, focus state, and snapshot tests (via [swift-snapshot-testing](https://github.com/pointfreeco/swift-snapshot-testing)). Snapshot tests record reference images on first run — if you change the UI, delete `CountdownTimerTests/__Snapshots__/` and run tests twice.
+Covers time parsing, speech extraction, URL scheme handling, focus state, and snapshot tests (via [swift-snapshot-testing](https://github.com/pointfreeco/swift-snapshot-testing)). Snapshot tests record reference images on first run — if you change the UI, delete `SazBunnyCountdownTests/__Snapshots__/` and run tests twice.
 
 ## License
 
