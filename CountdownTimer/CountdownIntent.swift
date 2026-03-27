@@ -2,30 +2,30 @@ import AppIntents
 import AppKit
 
 struct CountdownIntent: AppIntent {
-    static var title: LocalizedStringResource = "Countdown Timer"
-    static var description = IntentDescription("Start a countdown to a specific time")
+    static var title: LocalizedStringResource = "Saz Bunny Countdown"
+    static var description = IntentDescription("Set a focus timer to a specific time")
     static var openAppWhenRun = true
 
     @Parameter(title: "Time", description: "Target time (e.g. 4:20, 3:30 PM)")
     var time: String
 
     static var parameterSummary: some ParameterSummary {
-        Summary("Countdown to \(\.$time)")
+        Summary("Timer to \(\.$time)")
     }
 
     @MainActor
     func perform() async throws -> some IntentResult & ProvidesDialog {
         guard let appDelegate = NSApp.delegate as? AppDelegate else {
-            throw CountdownError.appNotReady
+            throw SazBunnyError.appNotReady
         }
 
         let result = TimeParser.parse(time)
         switch result {
         case .success(let date), .needsConfirmation(let date, _):
             appDelegate.handleTimeString(time)
-            return .result(dialog: "Countdown to \(formatted(date))")
+            return .result(dialog: "Timer set to \(formatted(date))")
         case .failure(let message):
-            throw CountdownError.invalidTime(message)
+            throw SazBunnyError.invalidTime(message)
         }
     }
 
@@ -35,7 +35,7 @@ struct CountdownIntent: AppIntent {
         return formatter.string(from: date)
     }
 
-    enum CountdownError: Swift.Error, CustomLocalizedStringResourceConvertible {
+    enum SazBunnyError: Swift.Error, CustomLocalizedStringResourceConvertible {
         case invalidTime(String)
         case appNotReady
 
@@ -53,11 +53,11 @@ struct CountdownShortcuts: AppShortcutsProvider {
         AppShortcut(
             intent: CountdownIntent(),
             phrases: [
-                "Start a countdown in \(.applicationName)",
+                "Start a timer in \(.applicationName)",
                 "Start \(.applicationName)",
-                "\(.applicationName) countdown",
+                "\(.applicationName) timer",
             ],
-            shortTitle: "Countdown",
+            shortTitle: "Saz Bunny",
             systemImageName: "timer"
         )
     }

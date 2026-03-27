@@ -21,8 +21,8 @@ Tell me when your focus session finishes and I'll show you a timer which stays o
 Don't feel like talking? You can also set a time from the terminal:
 
 ```bash
-open countdown://4:20
-open countdown://16:30
+open saz://4:20
+open saz://16:30
 ```
 
 # Privacy

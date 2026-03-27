@@ -1,5 +1,22 @@
 # Changelog
 
+## 1.4.0 — 2026-03-27
+
+### Changed
+
+- Rebranded app from "Countdown Timer" to "Saz Bunny"
+- URL scheme changed from `countdown://` to `saz://`
+- Siri phrases updated to reference "Saz Bunny" (e.g. "Start a timer in Saz Bunny")
+- Privacy permission descriptions updated to use "Saz Bunny" name
+- Shared `SazBunnyLayout` view extracts common bunny-on-right layout across all screens
+- Consistent bunny sizing across listening, countdown, and expired screens
+- Saz Bunny is now the default theme
+
+### Added
+
+- `SazBunnyError` image asset for error states
+- Four named image assets: SazBunnyListening, SazBunnyCountdown, SazBunnyExpired, SazBunnyError
+
 ## 1.3.0 — 2026-03-27
 
 ### Added
