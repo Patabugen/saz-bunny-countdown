@@ -35,10 +35,10 @@ class CountdownViewModel: ObservableObject {
         targetDate = nil
     }
 
-    private func updateDisplay() {
+    func updateDisplay(now: Date = Date()) {
         guard let targetDate = targetDate else { return }
 
-        let remaining = targetDate.timeIntervalSince(Date())
+        let remaining = targetDate.timeIntervalSince(now)
 
         if remaining <= 0 {
             timeString = "00:00"
