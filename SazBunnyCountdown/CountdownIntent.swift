@@ -2,9 +2,9 @@ import AppIntents
 import AppKit
 
 struct CountdownIntent: AppIntent {
-    static var title: LocalizedStringResource = "Saz Bunny Countdown"
-    static var description = IntentDescription("Set a focus timer to a specific time")
-    static var openAppWhenRun = true
+    static let title: LocalizedStringResource = "Saz Bunny Countdown"
+    static let description = IntentDescription("Set a focus timer to a specific time")
+    static let openAppWhenRun = true
 
     @Parameter(title: "Time", description: "Target time (e.g. 4:20, 3:30 PM)")
     var time: String

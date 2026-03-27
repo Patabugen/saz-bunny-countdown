@@ -2,6 +2,7 @@ import AppKit
 import Combine
 import SwiftUI
 
+@MainActor
 class FloatingPanel: NSWindow {
     let focusState = PanelFocusState()
 
