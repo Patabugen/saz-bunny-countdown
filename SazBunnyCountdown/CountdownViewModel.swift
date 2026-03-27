@@ -40,7 +40,7 @@ class CountdownViewModel: ObservableObject {
 
         let remaining = targetDate.timeIntervalSince(now)
 
-        if remaining <= 0 {
+        if remaining < 1 {
             timeString = "00:00"
             if !isFinished {
                 isFinished = true
