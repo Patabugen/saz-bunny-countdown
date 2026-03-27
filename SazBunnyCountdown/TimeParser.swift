@@ -65,7 +65,9 @@ struct TimeParser {
 
         // Unambiguous: explicit AM/PM or 24-hour format
         if explicitPeriod || hour > 12 {
-            let target = nextOccurrence(hour: hour, minute: minute, after: now, calendar: calendar)
+            guard let target = nextOccurrence(hour: hour, minute: minute, after: now, calendar: calendar) else {
+                return .failure("Could not construct date")
+            }
             return checkNightHours(target)
         }
 
@@ -73,8 +75,10 @@ struct TimeParser {
         let amHour = (hour == 12) ? 0 : hour
         let pmHour = (hour == 12) ? 12 : hour + 12
 
-        let amTarget = nextOccurrence(hour: amHour, minute: minute, after: now, calendar: calendar)
-        let pmTarget = nextOccurrence(hour: pmHour, minute: minute, after: now, calendar: calendar)
+        guard let amTarget = nextOccurrence(hour: amHour, minute: minute, after: now, calendar: calendar),
+              let pmTarget = nextOccurrence(hour: pmHour, minute: minute, after: now, calendar: calendar) else {
+            return .failure("Could not construct date")
+        }
 
         let target = amTarget < pmTarget ? amTarget : pmTarget
         return checkNightHours(target)
@@ -115,19 +119,28 @@ struct TimeParser {
         components.minute = targetMinute
         components.second = 0
 
-        var target = calendar.date(from: components)!
+        guard var target = calendar.date(from: components) else {
+            return .failure("Could not construct date")
+        }
         if target <= now {
-            // Time already passed — advance by 1 hour
-            target = calendar.date(byAdding: .hour, value: 1, to: target)!
+            guard let advanced = calendar.date(byAdding: .hour, value: 1, to: target) else {
+                return .failure("Could not advance date")
+            }
+            target = advanced
         }
 
         return checkNightHours(target)
     }
 
-    private static func nextOccurrence(hour: Int, minute: Int, after now: Date, calendar: Calendar) -> Date {
-        var target = calendar.date(bySettingHour: hour, minute: minute, second: 0, of: now)!
+    private static func nextOccurrence(hour: Int, minute: Int, after now: Date, calendar: Calendar) -> Date? {
+        guard var target = calendar.date(bySettingHour: hour, minute: minute, second: 0, of: now) else {
+            return nil
+        }
         if target <= now {
-            target = calendar.date(byAdding: .day, value: 1, to: target)!
+            guard let advanced = calendar.date(byAdding: .day, value: 1, to: target) else {
+                return nil
+            }
+            target = advanced
         }
         return target
     }
