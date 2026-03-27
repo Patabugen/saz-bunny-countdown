@@ -53,7 +53,7 @@ struct ListeningView: View {
                 if speechRecognizer.isListening && speechRecognizer.error == nil {
                     Text("Listening...")
                         .font(.system(size: 12, weight: .medium, design: .rounded))
-                        .foregroundStyle(t.textActive ?? t.secondary)
+                        .foregroundStyle(t.textActive)
                 }
 
                 if let parseError = parseError {

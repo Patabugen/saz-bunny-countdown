@@ -93,10 +93,7 @@ struct CountdownView: View {
     }
 
     private var sazDigitColor: Color {
-        if viewModel.isFinished {
-            return t.textDigitsExpired ?? t.finishedAlert
-        }
-        return t.textDigits ?? t.accent
+        viewModel.isFinished ? t.textDigitsExpired : t.textDigits
     }
 
     // MARK: - Classic (Clay) Layout

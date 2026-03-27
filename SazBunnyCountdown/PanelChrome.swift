@@ -69,8 +69,8 @@ struct PanelChrome<Content: View>: View {
     @ViewBuilder
     private var closeButton: some View {
         if isSazBunny {
-            let fg = isExpired ? (t.closeButtonExpiredFg ?? t.shadow) : (t.closeButtonFg ?? t.shadow)
-            let bgColor = isExpired ? (t.closeButtonExpiredBg ?? t.background) : (t.closeButtonBg ?? t.background)
+            let fg = isExpired ? t.closeButtonExpiredFg : t.closeButtonFg
+            let bgColor = isExpired ? t.closeButtonExpiredBg : t.closeButtonBg
             Button(action: onDismiss) {
                 Image(systemName: "xmark")
                     .font(.system(size: 10, weight: .bold))
