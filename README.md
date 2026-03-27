@@ -2,9 +2,34 @@
 
 # Saz-Bunny Countdown Timer
 
-A minimal but pretty floating countdown timer for macOS. Tell it when you need to finish, and it stays on screen until time's up. No dock icon, no menu bar — just a small always-on-top widget.
+Hi, I'm Saz-Bunny. I'm here to help you focus, with a minimal but pretty floating countdown timer for macOS.
 
-## Getting started
+Tell me when your focus session finishes and I'll show you a timer which stays on screen until time's up. No dock icon, no menu bar — just a small always-on-top widget.
+
+# Usage
+1. Open me up
+2. Speak the time you want me to count down to — "five twenty", "3:45 PM", "nine o'clock", whatever feels natural.
+   - On the first run you'll need to grand permissions
+3. Crack on with your session!
+4. When time's up, I'll make a a gentle chime and change the digits change color.
+5. Hit **Quit** or the **X** button to dismiss.
+
+<img src="screenshots/listening-active.png" width="320" />
+<img src="screenshots/countdown-unfocused.png" width="320" />
+
+Don't feel like talking? You can also set a time from the terminal:
+
+```bash
+open countdown://4:20
+open countdown://16:30
+```
+
+# Privacy
+Speech recognition runs entirely on-device. The app doesn't track anaything or need any kind of Internet connection.
+ 
+# Installation
+
+At the moment you need to build the app yourself, soon I'll sort our releases.
 
 Requires macOS 13+. Build from source with Xcode 15+:
 
@@ -14,36 +39,6 @@ open build/Debug/CountdownTimer.app
 ```
 
 Or just open `CountdownTimer.xcodeproj` in Xcode and hit Cmd+R.
-
-### 1. Tell it when to finish
-
-Launch the app and it asks you one thing:
-
-<p align="center"><img src="screenshots/listening-active.png" width="320" /></p>
-
-Just say a time out loud — "five twenty", "3:45 PM", "nine o'clock", whatever feels natural. Speech recognition runs entirely on-device.
-
-<p align="center"><img src="screenshots/listening-with-transcript.png" width="320" /></p>
-
-Don't feel like talking? You can also set a time from the terminal:
-
-```bash
-open countdown://4:20
-open countdown://16:30
-```
-
-Or trigger it through Siri / Shortcuts if you can figure out how to get that working (Claude couldn't).
-
-### 2. Wait
-
-The widget counts down in the corner of your screen. Click it to focus, click away to let it fade into the background.
-
-<p align="center">
-<img src="screenshots/countdown-focused.png" width="320" />&nbsp;&nbsp;
-<img src="screenshots/countdown-unfocused.png" width="320" />
-</p>
-
-When time's up, you'll hear a gentle chime and the digits change color. Hit **Quit** or the **X** button to dismiss.
 
 ### Time formats
 
