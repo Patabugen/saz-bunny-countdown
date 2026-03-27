@@ -40,12 +40,6 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         switch result {
         case .success(let date):
             showTimer(targetDate: date)
-        case .needsConfirmation(let date, let message):
-            showConfirmation(message: message) { [weak self] confirmed in
-                if confirmed {
-                    self?.showTimer(targetDate: date)
-                }
-            }
         case .failure(let message):
             showListening(errorMessage: message)
         }
@@ -139,15 +133,6 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     private func handleSpeechResult(_ transcript: String) {
         let timeString = SpeechTimeExtractor.extractTime(from: transcript)
         handleTimeString(timeString)
-    }
-
-    private func showConfirmation(message: String, completion: @escaping (Bool) -> Void) {
-        let alert = NSAlert()
-        alert.messageText = "Saz Bunny Countdown"
-        alert.informativeText = message
-        alert.addButton(withTitle: "Start")
-        alert.addButton(withTitle: "Cancel")
-        completion(alert.runModal() == .alertFirstButtonReturn)
     }
 
 }

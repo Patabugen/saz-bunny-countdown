@@ -2,7 +2,6 @@ import Foundation
 
 enum ParseResult {
     case success(Date)
-    case needsConfirmation(Date, String)
     case failure(String)
 }
 
@@ -68,7 +67,7 @@ struct TimeParser {
             guard let target = nextOccurrence(hour: hour, minute: minute, after: now, calendar: calendar) else {
                 return .failure("Could not construct date")
             }
-            return checkNightHours(target)
+            return .success(target)
         }
 
         // Ambiguous: try both AM and PM, pick nearest future
@@ -81,7 +80,7 @@ struct TimeParser {
         }
 
         let target = amTarget < pmTarget ? amTarget : pmTarget
-        return checkNightHours(target)
+        return .success(target)
     }
 
     private static func parseRelative(_ input: String) -> ParseResult? {
@@ -129,7 +128,7 @@ struct TimeParser {
             target = advanced
         }
 
-        return checkNightHours(target)
+        return .success(target)
     }
 
     private static func nextOccurrence(hour: Int, minute: Int, after now: Date, calendar: Calendar) -> Date? {
@@ -143,20 +142,5 @@ struct TimeParser {
             target = advanced
         }
         return target
-    }
-
-    private static func checkNightHours(_ target: Date) -> ParseResult {
-        let hour = Calendar.current.component(.hour, from: target)
-        if hour >= 22 || hour < 9 {
-            let formatter = DateFormatter()
-            formatter.dateStyle = .short
-            formatter.timeStyle = .short
-            let timeStr = formatter.string(from: target)
-            return .needsConfirmation(
-                target,
-                "Timer set for \(timeStr) — that's outside 9 AM–10 PM. Start anyway?"
-            )
-        }
-        return .success(target)
     }
 }
