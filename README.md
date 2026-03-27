@@ -14,9 +14,11 @@ Tell me when your focus session finishes and I'll show you a timer which stays o
 4. When time's up, I'll make a a gentle chime and change the digits change color.
 5. Hit **Quit** or the **X** button to dismiss.
 
+<p align="center">
 <img src="screenshots/listening.png" width="320" />
 <img src="screenshots/countdown.png" width="320" />
 <img src="screenshots/expired.png" width="320" />
+</p>
 
 Don't feel like talking? You can also set a time from the terminal:
 
@@ -54,7 +56,7 @@ open build/Debug/SazBunnyCountdown.app
 
 ### Time formats
 
-The parser is pretty flexible — `4:20 PM`, `16:20`, `520`, `4 PM`, or just `4` all work. When a time is ambiguous (no AM/PM), it picks whichever is closest in the future. If you set something between 10 PM and 9 AM, it'll double-check with you first.
+The parser is pretty flexible — `4:20 PM`, `16:20`, `520`, `4 PM`, or just `4` all work. When a time is ambiguous (no AM/PM), it picks whichever is closest in the future.
 
 ## Running tests
 
