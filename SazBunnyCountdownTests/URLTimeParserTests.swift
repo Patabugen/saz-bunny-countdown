@@ -41,7 +41,7 @@ struct URLTimeParserTests {
         // URLTimeParser returns the host string, TimeParser handles the rest
         let url = URL(string: "saz://4%20PM")!
         let extracted = URLTimeParser.extractTime(from: url)
-        // URL treats "4%20PM" as the host, decoded to "4 PM"
-        #expect(extracted != nil)
+        // URL decodes percent-encoding in the host, giving "4 PM"
+        #expect(extracted == "4 PM")
     }
 }
