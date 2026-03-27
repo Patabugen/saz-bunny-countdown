@@ -14,8 +14,9 @@ struct SnapshotTests {
         focusState.isFocused = isFocused
 
         let view = CountdownView(viewModel: viewModel, focusState: focusState) {}
+            .environmentObject(ThemeManager())
         let hostingView = NSHostingView(rootView: view)
-        hostingView.frame = NSRect(x: 0, y: 0, width: ClayTheme.windowWidth, height: ClayTheme.windowHeight)
+        hostingView.frame = NSRect(x: 0, y: 0, width: WindowConstants.width, height: WindowConstants.height)
         return hostingView
     }
 
@@ -26,8 +27,9 @@ struct SnapshotTests {
         focusState.isFocused = isFocused
 
         let view = ListeningView(speechRecognizer: speechRecognizer, focusState: focusState) {}
+            .environmentObject(ThemeManager())
         let hostingView = NSHostingView(rootView: view)
-        hostingView.frame = NSRect(x: 0, y: 0, width: ClayTheme.windowWidth, height: ClayTheme.windowHeight)
+        hostingView.frame = NSRect(x: 0, y: 0, width: WindowConstants.width, height: WindowConstants.height)
         return hostingView
     }
 
@@ -53,8 +55,9 @@ struct SnapshotTests {
         focusState.isFocused = true
 
         let view = CountdownView(viewModel: viewModel, focusState: focusState) {}
+            .environmentObject(ThemeManager())
         let hostingView = NSHostingView(rootView: view)
-        hostingView.frame = NSRect(x: 0, y: 0, width: ClayTheme.windowWidth, height: ClayTheme.windowHeight)
+        hostingView.frame = NSRect(x: 0, y: 0, width: WindowConstants.width, height: WindowConstants.height)
         assertSnapshot(of: hostingView, as: .image)
     }
 

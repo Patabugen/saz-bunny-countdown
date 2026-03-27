@@ -4,23 +4,26 @@ import SwiftUI
 struct CountdownView: View {
     @ObservedObject var viewModel: CountdownViewModel
     @ObservedObject var focusState: PanelFocusState
+    @EnvironmentObject var themeManager: ThemeManager
     let onDismiss: () -> Void
+
+    private var t: Theme { themeManager.active }
 
     var body: some View {
         ZStack(alignment: .topTrailing) {
             // Background
-            RoundedRectangle(cornerRadius: ClayTheme.cornerRadius)
-                .fill(ClayTheme.background)
+            RoundedRectangle(cornerRadius: t.cornerRadius)
+                .fill(t.background)
                 .shadow(
-                    color: ClayTheme.outerShadowColor,
-                    radius: ClayTheme.outerShadowRadius,
-                    x: ClayTheme.outerShadowX,
-                    y: ClayTheme.outerShadowY
+                    color: t.outerShadowColor,
+                    radius: t.outerShadowRadius,
+                    x: t.outerShadowX,
+                    y: t.outerShadowY
                 )
                 .overlay(
-                    RoundedRectangle(cornerRadius: ClayTheme.cornerRadius)
+                    RoundedRectangle(cornerRadius: t.cornerRadius)
                         .strokeBorder(
-                            focusState.isFocused ? ClayTheme.focusBorder : ClayTheme.unfocusBorder,
+                            focusState.isFocused ? t.focusBorder : t.unfocusBorder,
                             lineWidth: focusState.isFocused ? 2.5 : 1
                         )
                 )
@@ -33,14 +36,14 @@ struct CountdownView: View {
                     Text(viewModel.timeString)
                         .font(.system(size: 36, weight: .bold, design: .rounded))
                         .monospacedDigit()
-                        .foregroundColor(ClayTheme.finishedAlert)
-                        .shadow(color: ClayTheme.outerShadowColor, radius: 2, x: 1, y: 2)
+                        .foregroundColor(t.finishedAlert)
+                        .shadow(color: t.outerShadowColor, radius: 2, x: 1, y: 2)
                 } else {
                     Text(viewModel.timeString)
                         .font(.system(size: 36, weight: .bold, design: .rounded))
                         .monospacedDigit()
-                        .foregroundStyle(ClayTheme.digitGradient)
-                        .shadow(color: ClayTheme.outerShadowColor, radius: 2, x: 1, y: 2)
+                        .foregroundStyle(t.digitGradient)
+                        .shadow(color: t.outerShadowColor, radius: 2, x: 1, y: 2)
                 }
 
                 Spacer()
@@ -49,7 +52,7 @@ struct CountdownView: View {
                     if let target = viewModel.targetTimeString {
                         Text("until \(target)")
                             .font(.system(size: 12, weight: .medium, design: .rounded))
-                            .foregroundColor(ClayTheme.textSecondary)
+                            .foregroundColor(t.textSecondary)
                     }
 
                     Spacer()
@@ -57,13 +60,13 @@ struct CountdownView: View {
                     Button(action: onDismiss) {
                         Text("Quit")
                             .font(.system(size: 12, weight: .semibold, design: .rounded))
-                            .foregroundColor(ClayTheme.buttonText)
+                            .foregroundColor(t.buttonText)
                             .padding(.horizontal, 20)
                             .padding(.vertical, 5)
                             .background(
                                 Capsule()
-                                    .fill(ClayTheme.buttonFill)
-                                    .shadow(color: ClayTheme.outerShadowColor, radius: 3, x: 1, y: 2)
+                                    .fill(t.buttonFill)
+                                    .shadow(color: t.outerShadowColor, radius: 3, x: 1, y: 2)
                             )
                     }
                     .buttonStyle(.plain)
@@ -74,15 +77,28 @@ struct CountdownView: View {
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
 
-            Button(action: onDismiss) {
-                Image(systemName: "xmark.circle.fill")
-                    .font(.system(size: 16, weight: .medium))
-                    .foregroundColor(ClayTheme.shadow.opacity(0.4))
+            HStack(spacing: 6) {
+                Menu {
+                    ThemePickerMenu()
+                } label: {
+                    Image(systemName: "paintbrush.fill")
+                        .font(.system(size: 12, weight: .medium))
+                        .foregroundColor(t.shadow.opacity(0.4))
+                }
+                .menuStyle(.borderlessButton)
+                .fixedSize()
+
+                Button(action: onDismiss) {
+                    Image(systemName: "xmark.circle.fill")
+                        .font(.system(size: 16, weight: .medium))
+                        .foregroundColor(t.shadow.opacity(0.4))
+                }
+                .buttonStyle(.plain)
             }
-            .buttonStyle(.plain)
             .padding(10)
         }
-        .frame(width: ClayTheme.windowWidth, height: ClayTheme.windowHeight)
+        .frame(width: WindowConstants.width, height: WindowConstants.height)
         .animation(.easeInOut(duration: 0.15), value: focusState.isFocused)
+        .contextMenu { ThemePickerMenu() }
     }
 }

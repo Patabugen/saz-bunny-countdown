@@ -6,6 +6,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     private var panel: FloatingPanel?
     let viewModel = CountdownViewModel()
     let speechRecognizer = SpeechRecognizer()
+    let themeManager = ThemeManager()
     private var launchedWithURL = false
 
     func applicationDidFinishLaunching(_ notification: Notification) {
@@ -60,7 +61,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         guard let panel = panel else { return }
         let view = ListeningView(speechRecognizer: speechRecognizer, focusState: panel.focusState, parseError: parseError) { [weak self] in
             self?.dismissTimer()
-        }
+        }.environmentObject(themeManager)
         showPanel(content: view)
 
         speechRecognizer.startListening { [weak self] transcript in
@@ -76,7 +77,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         guard let panel = panel else { return }
         let view = CountdownView(viewModel: viewModel, focusState: panel.focusState) { [weak self] in
             self?.dismissTimer()
-        }
+        }.environmentObject(themeManager)
         showPanel(content: view)
     }
 
