@@ -22,7 +22,9 @@ struct CountdownIntent: AppIntent {
         let result = TimeParser.parse(time)
         switch result {
         case .success(let date), .needsConfirmation(let date, _):
-            appDelegate.handleTimeString(time)
+            // Start the timer directly — the intent invocation acts as
+            // implicit confirmation, avoiding a blocking NSAlert.runModal().
+            appDelegate.showTimer(targetDate: date)
             return .result(dialog: "Timer set to \(formatted(date))")
         case .failure(let message):
             throw SazBunnyError.invalidTime(message)
