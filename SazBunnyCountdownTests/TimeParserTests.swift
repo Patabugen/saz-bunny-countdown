@@ -198,15 +198,25 @@ struct TimeParserTests {
 
     // MARK: - Relative "Past" / "To"
 
-    @Test("Relative 'past' resolves to minutes past the next hour")
+    @Test("Relative 'past' resolves to minutes past the current hour")
     func relativePast() {
+        let now = Date()
+        let cal = Calendar.current
+        let currentMinute = cal.component(.minute, from: now)
         let result = TimeParser.parse("20 past")
         switch result {
         case .success(let date), .needsConfirmation(let date, _):
-            let cal = Calendar.current
+            let hour = cal.component(.hour, from: date)
             let minute = cal.component(.minute, from: date)
             #expect(minute == 20)
-            #expect(date > Date())
+            #expect(date > now)
+            // Should target the current hour if :20 hasn't passed, otherwise next hour
+            let currentHour = cal.component(.hour, from: now)
+            if currentMinute < 20 {
+                #expect(hour == currentHour, "Expected current hour when :20 hasn't passed yet")
+            } else {
+                #expect(hour == (currentHour + 1) % 24, "Expected next hour when :20 has passed")
+            }
         case .failure:
             Issue.record("Expected success for '20 past'")
         }
@@ -214,13 +224,23 @@ struct TimeParserTests {
 
     @Test("Relative 'to' resolves to minutes before the next hour")
     func relativeTo() {
+        let now = Date()
+        let cal = Calendar.current
+        let currentMinute = cal.component(.minute, from: now)
         let result = TimeParser.parse("10 to")
         switch result {
         case .success(let date), .needsConfirmation(let date, _):
-            let cal = Calendar.current
+            let hour = cal.component(.hour, from: date)
             let minute = cal.component(.minute, from: date)
             #expect(minute == 50)
-            #expect(date > Date())
+            #expect(date > now)
+            // Should target the current hour if :50 hasn't passed, otherwise next hour
+            let currentHour = cal.component(.hour, from: now)
+            if currentMinute < 50 {
+                #expect(hour == currentHour, "Expected current hour when :50 hasn't passed yet")
+            } else {
+                #expect(hour == (currentHour + 1) % 24, "Expected next hour when :50 has passed")
+            }
         case .failure:
             Issue.record("Expected success for '10 to'")
         }
