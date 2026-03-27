@@ -30,7 +30,7 @@ struct SnapshotTests {
         let focusState = PanelFocusState()
         focusState.isFocused = isFocused
 
-        let view = CountdownView(viewModel: viewModel, focusState: focusState) {}
+        let view = CountdownView(viewModel: viewModel, focusState: focusState, onDismiss: {}, onStartNew: {})
             .environmentObject(makeThemeManager(style: themeStyle))
         let hostingView = NSHostingView(rootView: view)
         hostingView.frame = NSRect(x: 0, y: 0, width: WindowConstants.width, height: WindowConstants.height)
