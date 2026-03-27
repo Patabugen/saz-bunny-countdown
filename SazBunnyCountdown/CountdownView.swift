@@ -12,67 +12,20 @@ struct CountdownView: View {
     private var isSazBunny: Bool { themeManager.activeStyle.usesBunnyImagery }
 
     var body: some View {
-        ZStack(alignment: .topTrailing) {
-            // Background
-            RoundedRectangle(cornerRadius: t.cornerRadius)
-                .fill(currentBackground)
-                .shadow(
-                    color: t.outerShadowColor,
-                    radius: t.outerShadowRadius,
-                    x: t.outerShadowX,
-                    y: t.outerShadowY
-                )
-                .overlay(
-                    RoundedRectangle(cornerRadius: t.cornerRadius)
-                        .strokeBorder(
-                            focusState.isFocused ? t.focusBorder : t.unfocusBorder,
-                            lineWidth: focusState.isFocused ? 2.5 : 1
-                        )
-                )
-
-            // Content
+        PanelChrome(
+            focusState: focusState,
+            backgroundColor: isSazBunny && viewModel.isFinished ? t.expiredBackground : nil,
+            isExpired: viewModel.isFinished,
+            onDismiss: onDismiss
+        ) {
             if isSazBunny {
                 sazBunnyContent
             } else {
                 classicContent
             }
-
-            // Top-right controls
-            HStack(spacing: 6) {
-                Menu {
-                    ThemePickerMenu()
-                } label: {
-                    Image(systemName: "paintbrush.fill")
-                        .font(.system(size: 12, weight: .medium))
-                        .foregroundStyle(t.shadow.opacity(0.4))
-                }
-                .menuStyle(.borderlessButton)
-                .fixedSize()
-
-                if isSazBunny {
-                    sazCloseButton
-                } else {
-                    Button(action: onDismiss) {
-                        Image(systemName: "xmark.circle.fill")
-                            .font(.system(size: 16, weight: .medium))
-                            .foregroundStyle(t.shadow.opacity(0.4))
-                    }
-                    .buttonStyle(.plain)
-                }
-            }
-            .padding(10)
         }
-        .frame(width: WindowConstants.width, height: WindowConstants.height)
         .animation(.easeInOut(duration: 0.3), value: viewModel.isFinished)
         .animation(.easeInOut(duration: 0.15), value: focusState.isFocused)
-        .contextMenu { ThemePickerMenu() }
-    }
-
-    private var currentBackground: Color {
-        if isSazBunny && viewModel.isFinished {
-            return t.expiredBackground
-        }
-        return t.background
     }
 
     // MARK: - Saz Bunny Layout
@@ -131,31 +84,12 @@ struct CountdownView: View {
         return t.textDigits ?? t.accent
     }
 
-    private var sazCloseButton: some View {
-        let fg: Color = viewModel.isFinished
-            ? (t.closeButtonExpiredFg ?? t.shadow)
-            : (t.closeButtonFg ?? t.shadow)
-        let bg: Color = viewModel.isFinished
-            ? (t.closeButtonExpiredBg ?? t.background)
-            : (t.closeButtonBg ?? t.background)
-
-        return Button(action: onDismiss) {
-            Image(systemName: "xmark")
-                .font(.system(size: 10, weight: .bold))
-                .foregroundStyle(fg)
-                .frame(width: 22, height: 22)
-                .background(Circle().fill(bg))
-        }
-        .buttonStyle(.plain)
-    }
-
     // MARK: - Classic (Clay) Layout
 
     private var classicContent: some View {
         VStack {
             Spacer()
 
-            // Timer text
             if viewModel.isFinished {
                 Text(viewModel.timeString)
                     .font(.system(size: 36, weight: .bold, design: .rounded))

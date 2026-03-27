@@ -12,58 +12,13 @@ struct ListeningView: View {
     private var isSazBunny: Bool { themeManager.activeStyle.usesBunnyImagery }
 
     var body: some View {
-        ZStack(alignment: .topTrailing) {
-            // Background
-            RoundedRectangle(cornerRadius: t.cornerRadius)
-                .fill(t.background)
-                .shadow(
-                    color: t.outerShadowColor,
-                    radius: t.outerShadowRadius,
-                    x: t.outerShadowX,
-                    y: t.outerShadowY
-                )
-                .overlay(
-                    RoundedRectangle(cornerRadius: t.cornerRadius)
-                        .strokeBorder(
-                            focusState.isFocused ? t.focusBorder : t.unfocusBorder,
-                            lineWidth: focusState.isFocused ? 2.5 : 1
-                        )
-                )
-
-            // Content
+        PanelChrome(focusState: focusState, onDismiss: onDismiss) {
             if isSazBunny {
                 sazBunnyContent
             } else {
                 classicContent
             }
-
-            // Top-right controls
-            HStack(spacing: 6) {
-                Menu {
-                    ThemePickerMenu()
-                } label: {
-                    Image(systemName: "paintbrush.fill")
-                        .font(.system(size: 12, weight: .medium))
-                        .foregroundStyle(t.shadow.opacity(0.4))
-                }
-                .menuStyle(.borderlessButton)
-                .fixedSize()
-
-                if isSazBunny {
-                    sazCloseButton(isExpired: false)
-                } else {
-                    Button(action: onDismiss) {
-                        Image(systemName: "xmark.circle.fill")
-                            .font(.system(size: 16, weight: .medium))
-                            .foregroundStyle(t.shadow.opacity(0.4))
-                    }
-                    .buttonStyle(.plain)
-                }
-            }
-            .padding(10)
         }
-        .frame(width: WindowConstants.width, height: WindowConstants.height)
-        .contextMenu { ThemePickerMenu() }
     }
 
     // MARK: - Saz Bunny Layout
@@ -141,21 +96,5 @@ struct ListeningView: View {
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .padding(.horizontal, 16)
-    }
-
-    // MARK: - Saz Close Button
-
-    private func sazCloseButton(isExpired: Bool) -> some View {
-        Button(action: onDismiss) {
-            Image(systemName: "xmark")
-                .font(.system(size: 10, weight: .bold))
-                .foregroundStyle(isExpired ? (t.closeButtonExpiredFg ?? t.shadow) : (t.closeButtonFg ?? t.shadow))
-                .frame(width: 22, height: 22)
-                .background(
-                    Circle()
-                        .fill(isExpired ? (t.closeButtonExpiredBg ?? t.background) : (t.closeButtonBg ?? t.background))
-                )
-        }
-        .buttonStyle(.plain)
     }
 }
