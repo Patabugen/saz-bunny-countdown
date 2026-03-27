@@ -1,0 +1,12 @@
+{
+  "images" : [
+    {
+      "filename" : "saz-bunny-logo.png",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}

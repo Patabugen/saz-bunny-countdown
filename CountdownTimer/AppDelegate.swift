@@ -64,8 +64,11 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         }.environmentObject(themeManager)
         showPanel(content: view)
 
-        speechRecognizer.startListening { [weak self] transcript in
-            self?.handleSpeechResult(transcript)
+        Task {
+            try? await Task.sleep(for: .milliseconds(200))
+            speechRecognizer.startListening { [weak self] transcript in
+                self?.handleSpeechResult(transcript)
+            }
         }
     }
 

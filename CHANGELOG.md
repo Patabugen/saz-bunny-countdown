@@ -1,5 +1,25 @@
 # Changelog
 
+## 1.3.0 — 2026-03-27
+
+### Added
+
+- Saz-Bunny theme with full colour palette derived from the mascot (purple, teal, pink)
+- Bunny mascot appears on the ask screen, peeking from the right edge
+- Small bunny icon on the countdown screen (top-right column)
+- Large bunny appears on the expired screen, peeking from the left
+- Background shifts from soft lavender (#F5F0FF) to soft pink (#FDF2F8) on expiry
+- Animated colour transition when timer expires (0.3s ease-in-out)
+- Circular close button with theme-aware colours (purple/pink depending on state)
+- Three image assets in Xcode asset catalogue: SazBunny, SazBunnySmall, SazBunnyPeekExpired
+- Snapshot tests for all three SazBunny states (listening, countdown, expired)
+
+### Changed
+
+- Theme struct extended with expired-state colour tokens and interactive element colours
+- ListeningView and CountdownView now branch layout by theme (Saz Bunny vs Classic)
+- Updated `foregroundColor` to `foregroundStyle` throughout views (modern SwiftUI API)
+
 ## 1.2.0 — 2026-03-26
 
 ### Changed
