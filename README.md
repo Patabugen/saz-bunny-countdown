@@ -30,16 +30,20 @@ Speech recognition runs entirely on-device. The app doesn't track anaything or n
  
 # Installation
 
-At the moment you need to build the app yourself, soon I'll sort our releases.
+Download the latest `Saz-Bunny.zip` from the [Releases](https://github.com/Patabugen/saz-bunny-countdown/releases) page, unzip it, and drag `Saz-Bunny.app` to your Applications folder.
 
-Requires macOS 13+. Build from source with Xcode 15+:
+**First launch:** Since the app isn't signed with an Apple Developer certificate, macOS will show a security warning. Right-click the app, choose **Open**, then click **Open** again in the dialog. You only need to do this once.
+
+Requires macOS 13+.
+
+### Building from source
+
+Open `CountdownTimer.xcodeproj` in Xcode 15+ and hit Cmd+R, or:
 
 ```bash
 xcodebuild -scheme CountdownTimer -destination 'platform=macOS' SYMROOT=build
 open build/Debug/CountdownTimer.app
 ```
-
-Or just open `CountdownTimer.xcodeproj` in Xcode and hit Cmd+R.
 
 ### Time formats
 
