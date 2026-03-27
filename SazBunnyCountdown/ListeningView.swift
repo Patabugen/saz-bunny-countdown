@@ -19,6 +19,9 @@ struct ListeningView: View {
                 classicContent
             }
         }
+        .accessibilityElement(children: .contain)
+        .accessibilityLabel(speechRecognizer.isListening ? "Listening for time" : "Timer setup")
+        .accessibilityValue(speechRecognizer.transcript.isEmpty ? "Waiting for input" : speechRecognizer.transcript)
     }
 
     // MARK: - Saz Bunny Layout

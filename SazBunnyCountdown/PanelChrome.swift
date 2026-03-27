@@ -79,6 +79,7 @@ struct PanelChrome<Content: View>: View {
                     .background(Circle().fill(bgColor))
             }
             .buttonStyle(.plain)
+            .accessibilityLabel("Close")
         } else {
             Button(action: onDismiss) {
                 Image(systemName: "xmark.circle.fill")
@@ -86,6 +87,7 @@ struct PanelChrome<Content: View>: View {
                     .foregroundStyle(t.shadow.opacity(0.4))
             }
             .buttonStyle(.plain)
+            .accessibilityLabel("Close")
         }
     }
 }

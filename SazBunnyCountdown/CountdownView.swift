@@ -24,8 +24,23 @@ struct CountdownView: View {
                 classicContent
             }
         }
+        .accessibilityElement(children: .contain)
+        .accessibilityLabel(viewModel.isFinished ? "Timer finished" : "Countdown timer")
+        .accessibilityValue(viewModel.timeString)
         .animation(.easeInOut(duration: 0.3), value: viewModel.isFinished)
         .animation(.easeInOut(duration: 0.15), value: focusState.isFocused)
+        .onChange(of: viewModel.isFinished) { finished in
+            if finished {
+                NSAccessibility.post(
+                    element: NSApp as Any,
+                    notification: .announcementRequested,
+                    userInfo: [
+                        NSAccessibility.NotificationUserInfoKey.announcement: "Timer finished" as NSString,
+                        NSAccessibility.NotificationUserInfoKey.priority: NSAccessibilityPriorityLevel.high.rawValue
+                    ]
+                )
+            }
+        }
     }
 
     // MARK: - Saz Bunny Layout
