@@ -149,7 +149,7 @@ enum ThemeStyle: String, CaseIterable, Identifiable {
 
 @MainActor
 class ThemeManager: ObservableObject {
-    @AppStorage("selectedTheme") private var stored: String = ThemeStyle.clay.rawValue
+    @AppStorage("selectedTheme") private var stored: String = ThemeStyle.sazBunny.rawValue
 
     var activeStyle: ThemeStyle {
         get { ThemeStyle(rawValue: stored) ?? .clay }

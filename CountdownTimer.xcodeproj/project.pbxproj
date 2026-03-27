@@ -20,6 +20,7 @@
 		AA000000000000000000200B /* SpeechTimeExtractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA000000000000000000100D /* SpeechTimeExtractor.swift */; };
 		AA000000000000000000200C /* URLTimeParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA000000000000000000100E /* URLTimeParser.swift */; };
 		AA000000000000000000200D /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA000000000000000000100F /* Theme.swift */; };
+		AA000000000000000000200E /* SazBunnyLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0000000000000000001011 /* SazBunnyLayout.swift */; };
 		BB0000000000000000002001 /* TimeParserTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB0000000000000000001001 /* TimeParserTests.swift */; };
 		BB0000000000000000002002 /* SpeechTimeExtractorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB0000000000000000001002 /* SpeechTimeExtractorTests.swift */; };
 		BB0000000000000000002003 /* URLTimeParserTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB0000000000000000001003 /* URLTimeParserTests.swift */; };
@@ -46,6 +47,7 @@
 		AA000000000000000000100D /* SpeechTimeExtractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpeechTimeExtractor.swift; sourceTree = "<group>"; };
 		AA000000000000000000100E /* URLTimeParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLTimeParser.swift; sourceTree = "<group>"; };
 		AA000000000000000000100F /* Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
+		AA0000000000000000001011 /* SazBunnyLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SazBunnyLayout.swift; sourceTree = "<group>"; };
 		BB0000000000000000000301 /* CountdownTimerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CountdownTimerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		BB0000000000000000001001 /* TimeParserTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeParserTests.swift; sourceTree = "<group>"; };
 		BB0000000000000000001002 /* SpeechTimeExtractorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpeechTimeExtractorTests.swift; sourceTree = "<group>"; };
@@ -107,6 +109,7 @@
 				AA000000000000000000100D /* SpeechTimeExtractor.swift */,
 				AA000000000000000000100E /* URLTimeParser.swift */,
 				AA000000000000000000100F /* Theme.swift */,
+				AA0000000000000000001011 /* SazBunnyLayout.swift */,
 				AA0000000000000000001008 /* Assets.xcassets */,
 				AA0000000000000000001009 /* Info.plist */,
 				AA000000000000000000100A /* CountdownTimer.entitlements */,
@@ -253,6 +256,7 @@
 				AA000000000000000000200B /* SpeechTimeExtractor.swift in Sources */,
 				AA000000000000000000200C /* URLTimeParser.swift in Sources */,
 				AA000000000000000000200D /* Theme.swift in Sources */,
+				AA000000000000000000200E /* SazBunnyLayout.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -1,0 +1,12 @@
+{
+  "images" : [
+    {
+      "filename" : "saz-bunny-countdown.png",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}

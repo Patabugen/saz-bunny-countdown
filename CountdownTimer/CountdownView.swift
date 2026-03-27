@@ -77,77 +77,41 @@ struct CountdownView: View {
     // MARK: - Saz Bunny Layout
 
     private var sazBunnyContent: some View {
-        ZStack(alignment: .leading) {
-            // Expired bunny peeking from left (behind digits)
-            if viewModel.isFinished {
-                Image("SazBunnyPeekExpired")
-                    .resizable()
-                    .aspectRatio(contentMode: .fit)
-                    .frame(width: 76)
-                    .scaleEffect(x: -1, y: 1) // Flip horizontally to peek from left
-                    .offset(x: -8) // Push slightly off left edge
-                    .accessibilityHidden(true)
-                    .transition(.opacity)
-            }
+        SazBunnyLayout(bunnyImage: viewModel.isFinished ? "SazBunnyExpired" : "SazBunnyCountdown") {
+            VStack(spacing: 4) {
+                Text(viewModel.timeString)
+                    .font(.system(size: 48, weight: .bold, design: .rounded))
+                    .monospacedDigit()
+                    .foregroundStyle(sazDigitColor)
 
-            // Main content row (always same position)
-            HStack(alignment: .center) {
-                // Left: large countdown digits
-                VStack(spacing: 4) {
-                    Text(viewModel.timeString)
-                        .font(.system(size: 48, weight: .bold, design: .rounded))
-                        .monospacedDigit()
-                        .foregroundStyle(sazDigitColor)
+                HStack(spacing: 8) {
+                    Button(action: onDismiss) {
+                        Text("Quit")
+                            .font(.system(size: 13, weight: .semibold, design: .rounded))
+                            .foregroundStyle(t.buttonText)
+                            .padding(.horizontal, 16)
+                            .padding(.vertical, 5)
+                            .background(
+                                Capsule()
+                                    .fill(viewModel.isFinished ? t.buttonExpiredFill : t.buttonFill)
+                            )
+                    }
+                    .buttonStyle(.plain)
+                    .keyboardShortcut(.return, modifiers: [])
 
-                    HStack(spacing: 8) {
-                        Button(action: onDismiss) {
-                            Text("Quit")
-                                .font(.system(size: 13, weight: .semibold, design: .rounded))
-                                .foregroundStyle(t.buttonText)
-                                .padding(.horizontal, 16)
-                                .padding(.vertical, 5)
-                                .background(
-                                    Capsule()
-                                        .fill(viewModel.isFinished ? t.buttonExpiredFill : t.buttonFill)
-                                )
-                        }
-                        .buttonStyle(.plain)
-                        .keyboardShortcut(.return, modifiers: [])
-
-                        if viewModel.isFinished {
-                            Text("Time's up!")
-                                .font(.system(size: 12, weight: .semibold, design: .rounded))
-                                .foregroundStyle(t.textExpiredLabel ?? t.finishedAlert)
-                        } else if let target = viewModel.targetTimeString {
-                            Text("until \(target)")
-                                .font(.system(size: 12, weight: .medium, design: .rounded))
-                                .foregroundStyle(t.textSecondary)
-                        }
+                    if viewModel.isFinished {
+                        Text("Time's up!")
+                            .font(.system(size: 12, weight: .semibold, design: .rounded))
+                            .foregroundStyle(t.textExpiredLabel ?? t.finishedAlert)
+                    } else if let target = viewModel.targetTimeString {
+                        Text("until \(target)")
+                            .font(.system(size: 12, weight: .medium, design: .rounded))
+                            .foregroundStyle(t.textSecondary)
                     }
                 }
-                .padding(.leading, 20)
-                .layoutPriority(1)
-
-                Spacer(minLength: 0)
-
-                // Right column: bunny icon
-                if viewModel.isFinished {
-                    Color.clear
-                        .frame(width: 28)
-                } else {
-                    Image("SazBunnySmall")
-                        .resizable()
-                        .aspectRatio(contentMode: .fit)
-                        .frame(maxWidth: 144, maxHeight: .infinity, alignment: .bottom)
-                        .padding(.trailing, 16)
-                        .padding(.top, 30) // below close button / theme menu
-                        .accessibilityHidden(true)
-                }
             }
-            .frame(maxWidth: .infinity, maxHeight: .infinity)
-            .padding(.bottom, 0)
+            .padding(.leading, 20)
         }
-        .clipped()
     }
 
     private var sazDigitColor: Color {

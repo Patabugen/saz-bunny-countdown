@@ -68,29 +68,34 @@ struct ListeningView: View {
 
     // MARK: - Saz Bunny Layout
 
+    private var sazBunnyImage: String {
+        if speechRecognizer.error != nil || parseError != nil {
+            return "SazBunnyError"
+        }
+        return "SazBunnyListening"
+    }
+
     private var sazBunnyContent: some View {
-        HStack(spacing: 0) {
-            // Left side: text content (~65% width)
-            VStack(alignment: .leading, spacing: 6) {
+        SazBunnyLayout(bunnyImage: sazBunnyImage) {
+            VStack(spacing: 4) {
                 if let error = speechRecognizer.error {
                     Text(error)
                         .font(.system(size: 13, weight: .medium, design: .rounded))
                         .foregroundStyle(t.errorText)
                 } else if speechRecognizer.transcript.isEmpty {
-                    Text("When should I finish?")
-                        .font(.system(size: 19, weight: .semibold, design: .rounded))
+                    Text("When should\nI finish?")
+                        .font(.system(size: 24, weight: .bold, design: .rounded))
                         .foregroundStyle(t.textPrimary)
-                        .lineSpacing(4)
-
-                    if speechRecognizer.isListening {
-                        Text("Listening...")
-                            .font(.system(size: 13, weight: .medium, design: .rounded))
-                            .foregroundStyle(t.textActive ?? t.secondary)
-                    }
                 } else {
                     Text(speechRecognizer.transcript)
                         .font(.system(size: 18, weight: .semibold, design: .rounded))
                         .foregroundStyle(t.textPrimary)
+                }
+
+                if speechRecognizer.isListening && speechRecognizer.error == nil {
+                    Text("Listening...")
+                        .font(.system(size: 12, weight: .medium, design: .rounded))
+                        .foregroundStyle(t.textActive ?? t.secondary)
                 }
 
                 if let parseError = parseError {
@@ -99,22 +104,8 @@ struct ListeningView: View {
                         .foregroundStyle(t.errorText)
                 }
             }
-            .frame(maxWidth: .infinity, alignment: .leading)
             .padding(.leading, 20)
-            .padding(.trailing, 8)
-
-            // Right side: bunny peeking from right edge, top-right anchored
-            Image("SazBunny")
-                .resizable()
-                .aspectRatio(contentMode: .fit)
-                .frame(width: 76)
-                .frame(maxWidth: 76, maxHeight: .infinity, alignment: .top)
-                .offset(x: 8) // Push slightly off-edge for peeking effect
-                .accessibilityHidden(true)
         }
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .padding(.vertical, 16)
-        .clipped()
     }
 
     // MARK: - Classic (Clay) Layout
