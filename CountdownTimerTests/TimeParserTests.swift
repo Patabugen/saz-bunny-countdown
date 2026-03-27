@@ -196,6 +196,77 @@ struct TimeParserTests {
         #expect(cal.component(.minute, from: date) == 0)
     }
 
+    // MARK: - Relative "Past" / "To"
+
+    @Test("Relative 'past' resolves to minutes past the next hour")
+    func relativePast() {
+        let result = TimeParser.parse("20 past")
+        switch result {
+        case .success(let date), .needsConfirmation(let date, _):
+            let cal = Calendar.current
+            let minute = cal.component(.minute, from: date)
+            #expect(minute == 20)
+            #expect(date > Date())
+        case .failure:
+            Issue.record("Expected success for '20 past'")
+        }
+    }
+
+    @Test("Relative 'to' resolves to minutes before the next hour")
+    func relativeTo() {
+        let result = TimeParser.parse("10 to")
+        switch result {
+        case .success(let date), .needsConfirmation(let date, _):
+            let cal = Calendar.current
+            let minute = cal.component(.minute, from: date)
+            #expect(minute == 50)
+            #expect(date > Date())
+        case .failure:
+            Issue.record("Expected success for '10 to'")
+        }
+    }
+
+    @Test("Relative 'quarter past' resolves to :15 of next hour")
+    func relativeQuarterPast() {
+        let result = TimeParser.parse("15 past")
+        switch result {
+        case .success(let date), .needsConfirmation(let date, _):
+            let cal = Calendar.current
+            let minute = cal.component(.minute, from: date)
+            #expect(minute == 15)
+            #expect(date > Date())
+        case .failure:
+            Issue.record("Expected success for '15 past'")
+        }
+    }
+
+    @Test("Relative 'quarter to' resolves to :45 of current hour")
+    func relativeQuarterTo() {
+        let result = TimeParser.parse("15 to")
+        switch result {
+        case .success(let date), .needsConfirmation(let date, _):
+            let cal = Calendar.current
+            let minute = cal.component(.minute, from: date)
+            #expect(minute == 45)
+            #expect(date > Date())
+        case .failure:
+            Issue.record("Expected success for '15 to'")
+        }
+    }
+
+    @Test("Relative time is always in the future")
+    func relativeTimeIsFuture() {
+        for input in ["5 past", "10 to", "20 past", "25 to", "30 past"] {
+            let result = TimeParser.parse(input)
+            switch result {
+            case .success(let date), .needsConfirmation(let date, _):
+                #expect(date > Date(), "Expected future date for '\(input)'")
+            case .failure:
+                Issue.record("Expected success for '\(input)'")
+            }
+        }
+    }
+
     // MARK: - Ambiguous Resolution
 
     @Test("Ambiguous time resolves to nearest future occurrence")

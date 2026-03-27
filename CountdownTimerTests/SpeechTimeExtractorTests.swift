@@ -92,6 +92,40 @@ struct SpeechTimeExtractorTests {
         #expect(SpeechTimeExtractor.extractTime(from: input) == expected)
     }
 
+    // MARK: - Relative "Past" / "To"
+
+    @Test("Extracts relative past/to with word numbers", arguments: [
+        ("twenty past", "20 past"),
+        ("ten to", "10 to"),
+        ("quarter past", "15 past"),
+        ("quarter to", "15 to"),
+        ("half past", "30 past"),
+        ("five past", "5 past"),
+        ("five to", "5 to"),
+        ("twenty five to", "25 to"),
+    ])
+    func relativePastToWords(input: String, expected: String) {
+        #expect(SpeechTimeExtractor.extractTime(from: input) == expected)
+    }
+
+    @Test("Extracts relative past/to with digits", arguments: [
+        ("20 past", "20 past"),
+        ("10 to", "10 to"),
+        ("5 past", "5 past"),
+    ])
+    func relativePastToDigits(input: String, expected: String) {
+        #expect(SpeechTimeExtractor.extractTime(from: input) == expected)
+    }
+
+    @Test("Extracts relative past/to from noisy speech", arguments: [
+        ("um twenty past", "20 past"),
+        ("set timer for ten to", "10 to"),
+        ("uh quarter past please", "15 past"),
+    ])
+    func relativePastToNoisy(input: String, expected: String) {
+        #expect(SpeechTimeExtractor.extractTime(from: input) == expected)
+    }
+
     // MARK: - Passthrough
 
     @Test("Returns original for unrecognized input", arguments: [

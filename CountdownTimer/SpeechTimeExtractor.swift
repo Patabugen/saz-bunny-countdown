@@ -4,6 +4,29 @@ struct SpeechTimeExtractor {
     static func extractTime(from transcript: String) -> String {
         let lower = transcript.lowercased()
 
+        // Match relative "X past" / "X to" patterns (e.g. "twenty past", "quarter to", "10 to")
+        let relativeWords: [String: Int] = [
+            "one": 1, "two": 2, "three": 3, "four": 4, "five": 5,
+            "six": 6, "seven": 7, "eight": 8, "nine": 9, "ten": 10,
+            "eleven": 11, "twelve": 12, "thirteen": 13, "fourteen": 14,
+            "fifteen": 15, "sixteen": 16, "seventeen": 17, "eighteen": 18,
+            "nineteen": 19, "twenty": 20, "twenty five": 25, "thirty": 30,
+            "quarter": 15, "half": 30,
+        ]
+        for (word, num) in relativeWords {
+            let pattern = "\\b\(NSRegularExpression.escapedPattern(for: word))\\s+(past|to)\\b"
+            if let range = lower.range(of: pattern, options: .regularExpression) {
+                let matched = String(lower[range])
+                let direction = matched.hasSuffix("to") ? "to" : "past"
+                return "\(num) \(direction)"
+            }
+        }
+        // Also match digit forms: "20 past", "10 to"
+        let digitRelPattern = #"\b(\d{1,2})\s+(past|to)\b"#
+        if let range = lower.range(of: digitRelPattern, options: .regularExpression) {
+            return String(lower[range])
+        }
+
         // Match "9 o'clock", "9 oclock", "9 o clock"
         let oclockPattern = #"(\d{1,2})\s*o['']?\s*clock"#
         if let match = lower.range(of: oclockPattern, options: .regularExpression) {

@@ -10,6 +10,11 @@ struct TimeParser {
     static func parse(_ input: String) -> ParseResult {
         let trimmed = input.trimmingCharacters(in: .whitespaces).lowercased()
 
+        // Check for relative "X past" / "X to" patterns
+        if let relativeResult = parseRelative(trimmed) {
+            return relativeResult
+        }
+
         // Detect explicit AM/PM
         let hasAM = trimmed.hasSuffix("am") || trimmed.contains("a.m")
         let hasPM = trimmed.hasSuffix("pm") || trimmed.contains("p.m")
@@ -72,6 +77,50 @@ struct TimeParser {
         let pmTarget = nextOccurrence(hour: pmHour, minute: minute, after: now, calendar: calendar)
 
         let target = amTarget < pmTarget ? amTarget : pmTarget
+        return checkNightHours(target)
+    }
+
+    private static func parseRelative(_ input: String) -> ParseResult? {
+        let pattern = #"^(\d{1,2})\s+(past|to)$"#
+        guard let regex = try? NSRegularExpression(pattern: pattern),
+              let match = regex.firstMatch(in: input, range: NSRange(input.startIndex..., in: input)),
+              let minuteRange = Range(match.range(at: 1), in: input),
+              let dirRange = Range(match.range(at: 2), in: input),
+              let minutes = Int(input[minuteRange]),
+              (1...30).contains(minutes) else {
+            return nil
+        }
+
+        let direction = String(input[dirRange])
+        let calendar = Calendar.current
+        let now = Date()
+        let currentHour = calendar.component(.hour, from: now)
+        let nextWholeHour = (currentHour + 1) % 24
+
+        var targetHour: Int
+        var targetMinute: Int
+
+        if direction == "past" {
+            targetHour = nextWholeHour
+            targetMinute = minutes
+        } else {
+            // "10 to" the next hour = currentHour:(60 - 10)
+            targetHour = currentHour
+            targetMinute = 60 - minutes
+        }
+
+        // Build target date
+        var components = calendar.dateComponents([.year, .month, .day], from: now)
+        components.hour = targetHour
+        components.minute = targetMinute
+        components.second = 0
+
+        var target = calendar.date(from: components)!
+        if target <= now {
+            // Time already passed — advance by 1 hour
+            target = calendar.date(byAdding: .hour, value: 1, to: target)!
+        }
+
         return checkNightHours(target)
     }
 
