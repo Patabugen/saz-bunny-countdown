@@ -12,6 +12,8 @@ The owner is a developer and does want to make sure the code you generate is goo
 
 Everything should be tested and testable.
 
+Make sure you have access to the SwiftUI-Agent-Skill before continuing.
+
 ## Project context
 
 - This is a macOS SwiftUI app (macOS 13+, Xcode 15+, Swift)
