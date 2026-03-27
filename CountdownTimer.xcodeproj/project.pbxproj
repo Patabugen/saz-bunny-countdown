@@ -40,6 +40,7 @@
 		AA0000000000000000001008 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		AA0000000000000000001009 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		AA000000000000000000100A /* CountdownTimer.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = CountdownTimer.entitlements; sourceTree = "<group>"; };
+		AA0000000000000000001010 /* CountdownTimerDebug.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = CountdownTimerDebug.entitlements; sourceTree = "<group>"; };
 		AA000000000000000000100B /* SpeechRecognizer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpeechRecognizer.swift; sourceTree = "<group>"; };
 		AA000000000000000000100C /* ListeningView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListeningView.swift; sourceTree = "<group>"; };
 		AA000000000000000000100D /* SpeechTimeExtractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpeechTimeExtractor.swift; sourceTree = "<group>"; };
@@ -109,6 +110,7 @@
 				AA0000000000000000001008 /* Assets.xcassets */,
 				AA0000000000000000001009 /* Info.plist */,
 				AA000000000000000000100A /* CountdownTimer.entitlements */,
+				AA0000000000000000001010 /* CountdownTimerDebug.entitlements */,
 			);
 			path = CountdownTimer;
 			sourceTree = "<group>";
@@ -386,7 +388,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_ENTITLEMENTS = CountdownTimer/CountdownTimer.entitlements;
+				CODE_SIGN_ENTITLEMENTS = CountdownTimer/CountdownTimerDebug.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;

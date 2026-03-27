@@ -33,19 +33,37 @@ struct TimeParserTests {
 
     // MARK: - Bare Numbers
 
-    @Test("Parses bare 3-4 digit numbers", arguments: [
-        ("520", 5, 20),
+    @Test("Parses unambiguous bare 3-4 digit numbers", arguments: [
         ("1630", 16, 30),
-        ("100", 1, 0),
         ("2359", 23, 59),
     ])
-    func bareNumbers(input: String, expectedHour: Int, expectedMinute: Int) {
+    func bareNumbersUnambiguous(input: String, expectedHour: Int, expectedMinute: Int) {
         let result = TimeParser.parse(input)
         switch result {
         case .success(let date), .needsConfirmation(let date, _):
             let cal = Calendar.current
             #expect(cal.component(.hour, from: date) == expectedHour)
             #expect(cal.component(.minute, from: date) == expectedMinute)
+        case .failure:
+            Issue.record("Expected success for \(input)")
+        }
+    }
+
+    @Test("Parses ambiguous bare numbers to nearest future occurrence", arguments: [
+        ("520", 5, 20),
+        ("100", 1, 0),
+    ])
+    func bareNumbersAmbiguous(input: String, expectedHour: Int, expectedMinute: Int) {
+        let result = TimeParser.parse(input)
+        switch result {
+        case .success(let date), .needsConfirmation(let date, _):
+            let cal = Calendar.current
+            let hour = cal.component(.hour, from: date)
+            let minute = cal.component(.minute, from: date)
+            #expect(minute == expectedMinute)
+            // Ambiguous: resolves to AM or PM depending on current time
+            #expect(hour == expectedHour || hour == expectedHour + 12)
+            #expect(date > Date())
         case .failure:
             Issue.record("Expected success for \(input)")
         }
