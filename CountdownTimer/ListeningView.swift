@@ -4,6 +4,7 @@ import SwiftUI
 struct ListeningView: View {
     @ObservedObject var speechRecognizer: SpeechRecognizer
     @ObservedObject var focusState: PanelFocusState
+    var parseError: String?
     let onDismiss: () -> Void
 
     var body: some View {
@@ -45,6 +46,12 @@ struct ListeningView: View {
                     Text(speechRecognizer.transcript)
                         .font(.system(size: 18, weight: .semibold, design: .rounded))
                         .foregroundColor(ClayTheme.textPrimary)
+                }
+
+                if let parseError = parseError {
+                    Text(parseError)
+                        .font(.system(size: 11, weight: .medium, design: .rounded))
+                        .foregroundColor(ClayTheme.errorText)
                 }
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)

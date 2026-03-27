@@ -45,17 +45,20 @@ class AppDelegate: NSObject, NSApplicationDelegate {
                 }
             }
         case .failure(let message):
-            showError(message)
+            showListening(errorMessage: message)
         }
     }
 
-    func showListening() {
+    private var parseError: String?
+
+    func showListening(errorMessage: String? = nil) {
         speechRecognizer.transcript = ""
         speechRecognizer.error = nil
+        parseError = errorMessage
         ensurePanel()
 
         guard let panel = panel else { return }
-        let view = ListeningView(speechRecognizer: speechRecognizer, focusState: panel.focusState) { [weak self] in
+        let view = ListeningView(speechRecognizer: speechRecognizer, focusState: panel.focusState, parseError: parseError) { [weak self] in
             self?.dismissTimer()
         }
         showPanel(content: view)
@@ -139,10 +142,4 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         completion(alert.runModal() == .alertFirstButtonReturn)
     }
 
-    private func showError(_ message: String) {
-        let alert = NSAlert()
-        alert.messageText = "Error"
-        alert.informativeText = message
-        alert.runModal()
-    }
 }
