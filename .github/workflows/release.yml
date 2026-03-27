@@ -46,6 +46,11 @@ jobs:
           fi
 
           cp -R "$APP_PATH" "Saz-Bunny.app"
+
+          # Ad-hoc sign the full bundle (seals resources so Gatekeeper accepts it)
+          codesign --force --deep --sign - "Saz-Bunny.app"
+          codesign --verify --verbose "Saz-Bunny.app"
+
           ditto -c -k --sequesterRsrc --keepParent "Saz-Bunny.app" "Saz-Bunny.zip"
 
           echo "Package created:"
