@@ -8,8 +8,8 @@ Tell me when your focus session finishes and I'll show you a timer which stays o
 
 # Usage
 1. Open me up
+   - On the first run you'll need to grand permissions so I can hear you
 2. Speak the time you want me to count down to — "five twenty", "3:45 PM", "nine o'clock", whatever feels natural.
-   - On the first run you'll need to grand permissions
 3. Crack on with your session!
 4. When time's up, I'll make a a gentle chime and change the digits change color.
 5. Hit **Quit** or the **X** button to dismiss.
