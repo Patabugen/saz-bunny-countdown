@@ -45,7 +45,12 @@ To allow it, either:
 
 You only need to do this once. Requires macOS 13+.
 
-### Building from source
+# Contributing
+Contributions are welcome from humans and AI Agents. Preferaly humans, because then we can learn together.
+
+I built this using Claude, see `skills.json` for some useful agent skills.
+
+# Building from source
 
 Open `SazBunnyCountdown.xcodeproj` in Xcode 15+ and hit Cmd+R, or:
 
@@ -54,11 +59,7 @@ xcodebuild -scheme SazBunnyCountdown -destination 'platform=macOS' SYMROOT=build
 open build/Debug/SazBunnyCountdown.app
 ```
 
-### Time formats
-
-The parser is pretty flexible — `4:20 PM`, `16:20`, `520`, `4 PM`, or just `4` all work. When a time is ambiguous (no AM/PM), it picks whichever is closest in the future.
-
-## Running tests
+# Running tests
 
 ```bash
 xcodebuild test -scheme SazBunnyCountdown -destination 'platform=macOS'
@@ -66,7 +67,7 @@ xcodebuild test -scheme SazBunnyCountdown -destination 'platform=macOS'
 
 Covers time parsing, speech extraction, URL scheme handling, focus state, and snapshot tests (via [swift-snapshot-testing](https://github.com/pointfreeco/swift-snapshot-testing)). Snapshot tests record reference images on first run — if you change the UI, delete `SazBunnyCountdownTests/__Snapshots__/` and run tests twice.
 
-## License
+# License
 
 Personal use, commercial use. Do what you want with it. I'd love to hear from you if you do.
 
