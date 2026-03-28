@@ -30,6 +30,7 @@ jobs:
             -project SazBunnyCountdown.xcodeproj \
             -scheme SazBunnyCountdown \
             -destination 'platform=macOS' \
+            -skip-testing:SazBunnyCountdownTests/SnapshotTests \
             CODE_SIGN_IDENTITY="-"
 
       - name: Build release

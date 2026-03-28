@@ -13,7 +13,7 @@ struct SpeechTimeExtractor {
             "nineteen": 19, "twenty": 20, "twenty five": 25, "thirty": 30,
             "quarter": 15, "half": 30,
         ]
-        for (word, num) in relativeWords {
+        for (word, num) in relativeWords.sorted(by: { $0.key.count > $1.key.count }) {
             let pattern = "\\b\(NSRegularExpression.escapedPattern(for: word))\\s+(past|to)\\b"
             if let range = lower.range(of: pattern, options: .regularExpression) {
                 let matched = String(lower[range])

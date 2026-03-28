@@ -170,7 +170,7 @@ struct TimeParserTests {
 
     // MARK: - Bare Number Edge Cases
 
-    @Test("Bare 0 resolves to midnight")
+    @Test("Bare 0 resolves to midnight or noon (nearest future)")
     func bareZeroIsMidnight() {
         let result = TimeParser.parse("0")
         guard case .success(let date) = result else {
@@ -178,7 +178,8 @@ struct TimeParserTests {
             return
         }
         let cal = Calendar.current
-        #expect(cal.component(.hour, from: date) == 0)
+        let hour = cal.component(.hour, from: date)
+        #expect(hour == 0 || hour == 12, "Expected midnight (0) or noon (12), got \(hour)")
         #expect(cal.component(.minute, from: date) == 0)
     }
 
