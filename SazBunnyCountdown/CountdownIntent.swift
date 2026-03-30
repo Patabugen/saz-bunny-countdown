@@ -22,7 +22,7 @@ struct CountdownIntent: AppIntent {
         let result = TimeParser.parse(time)
         switch result {
         case .success(let date):
-            appDelegate.showTimer(targetDate: date)
+            appDelegate.showTimer(targetDate: date, originalInput: time)
             return .result(dialog: "Timer set to \(formatted(date))")
         case .failure(let message):
             throw SazBunnyError.invalidTime(message)

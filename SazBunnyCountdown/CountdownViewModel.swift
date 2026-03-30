@@ -8,12 +8,26 @@ class CountdownViewModel: ObservableObject {
     @Published var targetTimeString: String?
     @Published var isFinished: Bool = false
 
+    private(set) var originalInput: String?
     private var targetDate: Date?
     private var timer: AnyCancellable?
 
-    func start(targetDate: Date) {
+    var repeatTargetDate: Date? {
+        guard let targetDate else { return nil }
+        return Calendar.current.date(byAdding: .hour, value: 1, to: targetDate)
+    }
+
+    var repeatTargetTimeString: String? {
+        guard let date = repeatTargetDate else { return nil }
+        let formatter = DateFormatter()
+        formatter.timeStyle = .short
+        return formatter.string(from: date)
+    }
+
+    func start(targetDate: Date, originalInput: String? = nil) {
         stop()
         self.targetDate = targetDate
+        self.originalInput = originalInput
         self.isFinished = false
 
         let formatter = DateFormatter()
@@ -33,6 +47,7 @@ class CountdownViewModel: ObservableObject {
         timer?.cancel()
         timer = nil
         targetDate = nil
+        originalInput = nil
     }
 
     func updateDisplay(now: Date = Date()) {

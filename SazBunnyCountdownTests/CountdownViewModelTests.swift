@@ -163,6 +163,77 @@ struct CountdownViewModelTests {
         #expect(vm.targetTimeString == expected)
     }
 
+    // MARK: - Original Input & Repeat
+
+    @Test("start stores original input")
+    func startStoresOriginalInput() {
+        let vm = CountdownViewModel()
+        let target = Date().addingTimeInterval(3600)
+        vm.start(targetDate: target, originalInput: "20 past")
+        #expect(vm.originalInput == "20 past")
+    }
+
+    @Test("start without originalInput defaults to nil")
+    func startWithoutOriginalInput() {
+        let vm = CountdownViewModel()
+        vm.start(targetDate: Date().addingTimeInterval(3600))
+        #expect(vm.originalInput == nil)
+    }
+
+    @Test("stop clears original input")
+    func stopClearsOriginalInput() {
+        let vm = CountdownViewModel()
+        vm.start(targetDate: Date().addingTimeInterval(3600), originalInput: "4:20 PM")
+        vm.stop()
+        #expect(vm.originalInput == nil)
+    }
+
+    @Test("repeatTargetDate is targetDate plus 1 hour")
+    func repeatTargetDateIsOneHourLater() {
+        let vm = CountdownViewModel()
+        let target = Date()
+        vm.start(targetDate: target)
+        let expected = Calendar.current.date(byAdding: .hour, value: 1, to: target)!
+        #expect(vm.repeatTargetDate == expected)
+    }
+
+    @Test("repeatTargetDate is nil after stop")
+    func repeatTargetDateNilAfterStop() {
+        let vm = CountdownViewModel()
+        vm.start(targetDate: Date())
+        vm.stop()
+        #expect(vm.repeatTargetDate == nil)
+    }
+
+    @Test("repeatTargetDate is nil on fresh view model")
+    func repeatTargetDateNilOnFresh() {
+        let vm = CountdownViewModel()
+        #expect(vm.repeatTargetDate == nil)
+    }
+
+    @Test("repeatTargetTimeString formats the repeat date")
+    func repeatTargetTimeStringFormats() {
+        let vm = CountdownViewModel()
+        let target = Date()
+        vm.start(targetDate: target)
+        let expected = Calendar.current.date(byAdding: .hour, value: 1, to: target)!
+        let formatter = DateFormatter()
+        formatter.timeStyle = .short
+        #expect(vm.repeatTargetTimeString == formatter.string(from: expected))
+    }
+
+    @Test("chained repeats advance by 1 hour each time")
+    func chainedRepeats() {
+        let vm = CountdownViewModel()
+        let original = Date()
+        vm.start(targetDate: original)
+        let first = vm.repeatTargetDate!
+        vm.start(targetDate: first)
+        let second = vm.repeatTargetDate!
+        let expected = Calendar.current.date(byAdding: .hour, value: 2, to: original)!
+        #expect(second == expected)
+    }
+
     // MARK: - Edge Cases
 
     @Test("updateDisplay is no-op after stop")

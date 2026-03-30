@@ -39,7 +39,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         let result = TimeParser.parse(timeString)
         switch result {
         case .success(let date):
-            showTimer(targetDate: date)
+            showTimer(targetDate: date, originalInput: timeString)
         case .failure(let message):
             showListening(errorMessage: message)
         }
@@ -67,9 +67,9 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         }
     }
 
-    func showTimer(targetDate: Date) {
+    func showTimer(targetDate: Date, originalInput: String? = nil) {
         speechRecognizer.stopListening()
-        viewModel.start(targetDate: targetDate)
+        viewModel.start(targetDate: targetDate, originalInput: originalInput)
         ensurePanel()
 
         guard let panel = panel else { return }
@@ -78,6 +78,11 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         }, onStartNew: { [weak self] in
             self?.viewModel.stop()
             self?.showListening()
+        }, onRepeat: { [weak self] in
+            guard let self,
+                  let repeatDate = self.viewModel.repeatTargetDate else { return }
+            let input = self.viewModel.originalInput
+            self.showTimer(targetDate: repeatDate, originalInput: input)
         }).environmentObject(themeManager)
         showPanel(content: view)
     }

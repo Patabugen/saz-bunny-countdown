@@ -7,6 +7,7 @@ struct CountdownView: View {
     @EnvironmentObject var themeManager: ThemeManager
     let onDismiss: () -> Void
     let onStartNew: () -> Void
+    let onRepeat: () -> Void
 
     private var t: Theme { themeManager.active }
     private var isSazBunny: Bool { themeManager.activeStyle.usesBunnyImagery }
@@ -87,6 +88,22 @@ struct CountdownView: View {
                             .foregroundStyle(t.textSecondary)
                     }
                 }
+
+                if viewModel.isFinished, let repeatTime = viewModel.repeatTargetTimeString {
+                    Button(action: onRepeat) {
+                        Text("Repeat \u{2013} countdown to \(repeatTime)")
+                            .font(.system(size: 11, weight: .medium, design: .rounded))
+                            .foregroundStyle(t.buttonText)
+                            .padding(.horizontal, 12)
+                            .padding(.vertical, 3)
+                            .background(
+                                Capsule()
+                                    .fill(t.buttonExpiredFill.opacity(0.7))
+                            )
+                    }
+                    .buttonStyle(.plain)
+                    .transition(.opacity)
+                }
             }
             .padding(.leading, 20)
         }
@@ -118,10 +135,32 @@ struct CountdownView: View {
 
             Spacer()
 
-            HStack {
-                if viewModel.isFinished {
-                    Button(action: onStartNew) {
-                        Text("Start New")
+            VStack(spacing: 6) {
+                HStack {
+                    if viewModel.isFinished {
+                        Button(action: onStartNew) {
+                            Text("Start New")
+                                .font(.system(size: 12, weight: .semibold, design: .rounded))
+                                .foregroundStyle(t.buttonText)
+                                .padding(.horizontal, 20)
+                                .padding(.vertical, 5)
+                                .background(
+                                    Capsule()
+                                        .fill(t.buttonFill)
+                                        .shadow(color: t.outerShadowColor, radius: 3, x: 1, y: 2)
+                                )
+                        }
+                        .buttonStyle(.plain)
+                    } else if let target = viewModel.targetTimeString {
+                        Text("until \(target)")
+                            .font(.system(size: 12, weight: .medium, design: .rounded))
+                            .foregroundStyle(t.textSecondary)
+                    }
+
+                    Spacer()
+
+                    Button(action: onDismiss) {
+                        Text("Quit")
                             .font(.system(size: 12, weight: .semibold, design: .rounded))
                             .foregroundStyle(t.buttonText)
                             .padding(.horizontal, 20)
@@ -133,28 +172,25 @@ struct CountdownView: View {
                             )
                     }
                     .buttonStyle(.plain)
-                } else if let target = viewModel.targetTimeString {
-                    Text("until \(target)")
-                        .font(.system(size: 12, weight: .medium, design: .rounded))
-                        .foregroundStyle(t.textSecondary)
+                    .keyboardShortcut(.return, modifiers: [])
                 }
 
-                Spacer()
-
-                Button(action: onDismiss) {
-                    Text("Quit")
-                        .font(.system(size: 12, weight: .semibold, design: .rounded))
-                        .foregroundStyle(t.buttonText)
-                        .padding(.horizontal, 20)
-                        .padding(.vertical, 5)
-                        .background(
-                            Capsule()
-                                .fill(t.buttonFill)
-                                .shadow(color: t.outerShadowColor, radius: 3, x: 1, y: 2)
-                        )
+                if viewModel.isFinished, let repeatTime = viewModel.repeatTargetTimeString {
+                    Button(action: onRepeat) {
+                        Text("Repeat \u{2013} countdown to \(repeatTime)")
+                            .font(.system(size: 11, weight: .medium, design: .rounded))
+                            .foregroundStyle(t.buttonText)
+                            .padding(.horizontal, 16)
+                            .padding(.vertical, 3)
+                            .background(
+                                Capsule()
+                                    .fill(t.buttonFill)
+                                    .shadow(color: t.outerShadowColor, radius: 3, x: 1, y: 2)
+                            )
+                    }
+                    .buttonStyle(.plain)
+                    .transition(.opacity)
                 }
-                .buttonStyle(.plain)
-                .keyboardShortcut(.return, modifiers: [])
             }
             .padding(.horizontal, 16)
             .padding(.bottom, 12)
