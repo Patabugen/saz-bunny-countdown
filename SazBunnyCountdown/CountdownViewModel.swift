@@ -14,7 +14,14 @@ class CountdownViewModel: ObservableObject {
 
     var repeatTargetDate: Date? {
         guard let targetDate else { return nil }
-        return Calendar.current.date(byAdding: .hour, value: 1, to: targetDate)
+        let calendar = Calendar.current
+        var candidate = targetDate
+        let now = Date()
+        repeat {
+            guard let next = calendar.date(byAdding: .hour, value: 1, to: candidate) else { return nil }
+            candidate = next
+        } while candidate <= now
+        return candidate
     }
 
     var repeatTargetTimeString: String? {
