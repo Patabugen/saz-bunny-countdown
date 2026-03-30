@@ -84,7 +84,18 @@ struct CountdownView: View {
         .animation(.easeInOut(duration: 0.15), value: focusState.isFocused)
         .onChange(of: viewModel.isFinished) { finished in
             if finished {
-                AccessibilityNotification.Announcement("Timer finished").post()
+                if #available(macOS 14.0, *) {
+                    AccessibilityNotification.Announcement("Timer finished").post()
+                } else {
+                    NSAccessibility.post(
+                        element: NSApp as Any,
+                        notification: .announcementRequested,
+                        userInfo: [
+                            .announcement: "Timer finished" as NSString,
+                            .priority: NSAccessibilityPriorityLevel.high.rawValue
+                        ]
+                    )
+                }
             }
         }
     }

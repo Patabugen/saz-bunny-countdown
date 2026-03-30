@@ -3,6 +3,8 @@ import SwiftUI
 
 @MainActor
 class AppDelegate: NSObject, NSApplicationDelegate {
+    private static let lastScreenNumberKey = "lastScreenNumber"
+
     private var panel: FloatingPanel?
     let viewModel = CountdownViewModel()
     let speechRecognizer = SpeechRecognizer()
@@ -113,7 +115,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         guard let panel = panel else { return }
 
         let screen: NSScreen
-        if let savedScreenNumber = UserDefaults.standard.object(forKey: "lastScreenNumber") as? Int,
+        if let savedScreenNumber = UserDefaults.standard.object(forKey: Self.lastScreenNumberKey) as? Int,
            let matched = NSScreen.screens.first(where: { ($0.deviceDescription[NSDeviceDescriptionKey("NSScreenNumber")] as? Int) == savedScreenNumber }) {
             screen = matched
         } else {
@@ -130,7 +132,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     private func saveCurrentScreen() {
         guard let panel = panel, let screen = panel.screen else { return }
         if let screenNumber = screen.deviceDescription[NSDeviceDescriptionKey("NSScreenNumber")] as? Int {
-            UserDefaults.standard.set(screenNumber, forKey: "lastScreenNumber")
+            UserDefaults.standard.set(screenNumber, forKey: Self.lastScreenNumberKey)
         }
     }
 
