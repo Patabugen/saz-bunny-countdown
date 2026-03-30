@@ -25,6 +25,8 @@ struct SnapshotTests {
         if isFinished {
             viewModel.timeString = "00:00"
             viewModel.isFinished = true
+        } else {
+            viewModel.timeString = timeString
         }
         viewModel.targetTimeString = targetTimeString
         let focusState = PanelFocusState()
