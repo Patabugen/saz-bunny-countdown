@@ -2,7 +2,6 @@ import SwiftUI
 
 struct PanelChrome<Content: View>: View {
     @ObservedObject var focusState: PanelFocusState
-    @EnvironmentObject var themeManager: ThemeManager
     let backgroundColor: Color?
     let isExpired: Bool
     let onDismiss: () -> Void
@@ -22,24 +21,22 @@ struct PanelChrome<Content: View>: View {
         self.content = content()
     }
 
-    private var t: Theme { themeManager.active }
-    private var isSazBunny: Bool { themeManager.activeStyle.usesBunnyImagery }
-    private var bg: Color { backgroundColor ?? t.background }
+    private var bg: Color { backgroundColor ?? Colors.background }
 
     var body: some View {
         ZStack(alignment: .topTrailing) {
-            RoundedRectangle(cornerRadius: t.cornerRadius)
+            RoundedRectangle(cornerRadius: Colors.cornerRadius)
                 .fill(bg)
                 .shadow(
-                    color: t.outerShadowColor,
-                    radius: t.outerShadowRadius,
-                    x: t.outerShadowX,
-                    y: t.outerShadowY
+                    color: Colors.outerShadowColor,
+                    radius: Colors.outerShadowRadius,
+                    x: Colors.outerShadowX,
+                    y: Colors.outerShadowY
                 )
                 .overlay(
-                    RoundedRectangle(cornerRadius: t.cornerRadius)
+                    RoundedRectangle(cornerRadius: Colors.cornerRadius)
                         .strokeBorder(
-                            focusState.isFocused ? t.focusBorder : t.unfocusBorder,
+                            focusState.isFocused ? Colors.focusBorder : Colors.unfocusBorder,
                             lineWidth: focusState.isFocused ? 2.5 : 1
                         )
                 )
@@ -47,18 +44,9 @@ struct PanelChrome<Content: View>: View {
             content
 
             // Top-right close button
-            closeButton
-                .padding(10)
-        }
-        .frame(width: WindowConstants.width, height: WindowConstants.height)
-    }
-
-    @ViewBuilder
-    private var closeButton: some View {
-        if isSazBunny {
-            let fg = isExpired ? t.closeButtonExpiredFg : t.closeButtonFg
-            let bgColor = isExpired ? t.closeButtonExpiredBg : t.closeButtonBg
             Button(action: onDismiss) {
+                let fg = isExpired ? Colors.closeButtonExpiredFg : Colors.closeButtonFg
+                let bgColor = isExpired ? Colors.closeButtonExpiredBg : Colors.closeButtonBg
                 Image(systemName: "xmark")
                     .font(.system(size: 10, weight: .bold))
                     .foregroundStyle(fg)
@@ -67,14 +55,8 @@ struct PanelChrome<Content: View>: View {
             }
             .buttonStyle(.plain)
             .accessibilityLabel("Close")
-        } else {
-            Button(action: onDismiss) {
-                Image(systemName: "xmark.circle.fill")
-                    .font(.system(size: 16, weight: .medium))
-                    .foregroundStyle(t.shadow.opacity(0.4))
-            }
-            .buttonStyle(.plain)
-            .accessibilityLabel("Close")
+            .padding(10)
         }
+        .frame(width: WindowConstants.width, height: WindowConstants.height)
     }
 }

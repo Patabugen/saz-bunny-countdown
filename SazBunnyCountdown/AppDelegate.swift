@@ -6,7 +6,6 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     private var panel: FloatingPanel?
     let viewModel = CountdownViewModel()
     let speechRecognizer = SpeechRecognizer()
-    let themeManager = ThemeManager()
     private var launchedWithURL = false
 
     func applicationDidFinishLaunching(_ notification: Notification) {
@@ -56,7 +55,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         guard let panel = panel else { return }
         let view = ListeningView(speechRecognizer: speechRecognizer, focusState: panel.focusState, parseError: parseError) { [weak self] in
             self?.dismissTimer()
-        }.environmentObject(themeManager)
+        }
         showPanel(content: view)
 
         Task {
@@ -83,7 +82,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
                   let repeatDate = self.viewModel.repeatTargetDate else { return }
             let input = self.viewModel.originalInput
             self.showTimer(targetDate: repeatDate, originalInput: input)
-        }).environmentObject(themeManager)
+        })
         showPanel(content: view)
     }
 
