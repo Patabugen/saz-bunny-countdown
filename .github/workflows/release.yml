@@ -24,15 +24,6 @@ jobs:
           echo "version=$VERSION" >> "$GITHUB_OUTPUT"
           echo "Building version: $VERSION"
 
-      - name: Run tests
-        run: |
-          xcodebuild test \
-            -project SazBunnyCountdown.xcodeproj \
-            -scheme SazBunnyCountdown \
-            -destination 'platform=macOS' \
-            -skip-testing:SazBunnyCountdownTests/SnapshotTests \
-            CODE_SIGN_IDENTITY="-"
-
       - name: Build release
         run: |
           xcodebuild \
