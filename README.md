@@ -32,8 +32,9 @@ Speech recognition runs entirely on-device. The app doesn't track anaything or n
  
 # Installation
 
-Download the latest `Saz-Bunny-Countdown.zip` from the [Releases](https://github.com/Patabugen/saz-bunny-countdown/releases) page and unzip it.
+Download the latest `Saz-Bunny-Countdown.zip` from the [Releases](https://github.com/Patabugen/saz-bunny-countdown/releases) page and unzip it, unblock it then drag it to your applications folder.
 
+## Unblocking
 **First launch:** The app isn't signed with an Apple Developer certificate, so macOS will block it. If you trust the developer, you can bypass the check.
 
 To allow it, either:
