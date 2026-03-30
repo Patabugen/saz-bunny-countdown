@@ -100,6 +100,7 @@ class SpeechRecognizer: ObservableObject {
     }
 
     private func finalize() {
+        guard isListening else { return }
         let text = transcript
         stopListening()
         if !text.isEmpty {
