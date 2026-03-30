@@ -1,3 +1,4 @@
+import Accessibility
 import SwiftUI
 
 @MainActor
@@ -83,14 +84,7 @@ struct CountdownView: View {
         .animation(.easeInOut(duration: 0.15), value: focusState.isFocused)
         .onChange(of: viewModel.isFinished) { finished in
             if finished {
-                NSAccessibility.post(
-                    element: NSApp as Any,
-                    notification: .announcementRequested,
-                    userInfo: [
-                        NSAccessibility.NotificationUserInfoKey.announcement: "Timer finished" as NSString,
-                        NSAccessibility.NotificationUserInfoKey.priority: NSAccessibilityPriorityLevel.high.rawValue
-                    ]
-                )
+                AccessibilityNotification.Announcement("Timer finished").post()
             }
         }
     }
