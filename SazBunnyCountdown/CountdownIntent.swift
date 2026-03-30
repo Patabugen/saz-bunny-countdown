@@ -29,10 +29,14 @@ struct CountdownIntent: AppIntent {
         }
     }
 
+    private static let timeFormatter: DateFormatter = {
+        let f = DateFormatter()
+        f.timeStyle = .short
+        return f
+    }()
+
     private func formatted(_ date: Date) -> String {
-        let formatter = DateFormatter()
-        formatter.timeStyle = .short
-        return formatter.string(from: date)
+        Self.timeFormatter.string(from: date)
     }
 
     enum SazBunnyError: Swift.Error, CustomLocalizedStringResourceConvertible {

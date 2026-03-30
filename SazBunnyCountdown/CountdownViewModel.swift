@@ -12,6 +12,12 @@ class CountdownViewModel: ObservableObject {
     private var targetDate: Date?
     private var timer: AnyCancellable?
 
+    private static let timeFormatter: DateFormatter = {
+        let f = DateFormatter()
+        f.timeStyle = .short
+        return f
+    }()
+
     var repeatTargetDate: Date? {
         guard let targetDate else { return nil }
         let calendar = Calendar.current
@@ -26,9 +32,7 @@ class CountdownViewModel: ObservableObject {
 
     var repeatTargetTimeString: String? {
         guard let date = repeatTargetDate else { return nil }
-        let formatter = DateFormatter()
-        formatter.timeStyle = .short
-        return formatter.string(from: date)
+        return Self.timeFormatter.string(from: date)
     }
 
     func start(targetDate: Date, originalInput: String? = nil) {
@@ -37,9 +41,7 @@ class CountdownViewModel: ObservableObject {
         self.originalInput = originalInput
         self.isFinished = false
 
-        let formatter = DateFormatter()
-        formatter.timeStyle = .short
-        self.targetTimeString = formatter.string(from: targetDate)
+        self.targetTimeString = Self.timeFormatter.string(from: targetDate)
 
         updateDisplay()
 
