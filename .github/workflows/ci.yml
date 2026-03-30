@@ -1,0 +1,25 @@
+name: Tests
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  test:
+    name: Run tests
+    runs-on: macos-15
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Run tests
+        run: |
+          xcodebuild test \
+            -project SazBunnyCountdown.xcodeproj \
+            -scheme SazBunnyCountdown \
+            -destination 'platform=macOS' \
+            -skip-testing:SazBunnyCountdownTests/SnapshotTests \
+            CODE_SIGN_IDENTITY="-"
