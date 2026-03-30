@@ -71,6 +71,7 @@ class SpeechRecognizer: ObservableObject {
             isListening = true
         } catch {
             self.error = "Could not start audio engine: \(error.localizedDescription)"
+            stopListening()
             return
         }
 
