@@ -22,6 +22,7 @@
 		AA000000000000000000200D /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA000000000000000000100F /* Theme.swift */; };
 		AA000000000000000000200E /* SazBunnyLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0000000000000000001011 /* SazBunnyLayout.swift */; };
 		AA000000000000000000200F /* PanelChrome.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0000000000000000001012 /* PanelChrome.swift */; };
+		AA0000000000000000002010 /* SizePreset.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0000000000000000001013 /* SizePreset.swift */; };
 		BB0000000000000000002001 /* TimeParserTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB0000000000000000001001 /* TimeParserTests.swift */; };
 		BB0000000000000000002002 /* SpeechTimeExtractorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB0000000000000000001002 /* SpeechTimeExtractorTests.swift */; };
 		BB0000000000000000002003 /* URLTimeParserTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB0000000000000000001003 /* URLTimeParserTests.swift */; };
@@ -51,6 +52,7 @@
 		AA000000000000000000100F /* Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
 		AA0000000000000000001011 /* SazBunnyLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SazBunnyLayout.swift; sourceTree = "<group>"; };
 		AA0000000000000000001012 /* PanelChrome.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PanelChrome.swift; sourceTree = "<group>"; };
+		AA0000000000000000001013 /* SizePreset.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SizePreset.swift; sourceTree = "<group>"; };
 		BB0000000000000000000301 /* SazBunnyCountdownTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SazBunnyCountdownTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		BB0000000000000000001001 /* TimeParserTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeParserTests.swift; sourceTree = "<group>"; };
 		BB0000000000000000001002 /* SpeechTimeExtractorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpeechTimeExtractorTests.swift; sourceTree = "<group>"; };
@@ -115,6 +117,7 @@
 				AA000000000000000000100F /* Theme.swift */,
 				AA0000000000000000001011 /* SazBunnyLayout.swift */,
 				AA0000000000000000001012 /* PanelChrome.swift */,
+				AA0000000000000000001013 /* SizePreset.swift */,
 				AA0000000000000000001008 /* Assets.xcassets */,
 				AA0000000000000000001009 /* Info.plist */,
 				AA000000000000000000100A /* SazBunnyCountdown.entitlements */,
@@ -264,6 +267,7 @@
 				AA000000000000000000200D /* Theme.swift in Sources */,
 				AA000000000000000000200E /* SazBunnyLayout.swift in Sources */,
 				AA000000000000000000200F /* PanelChrome.swift in Sources */,
+				AA0000000000000000002010 /* SizePreset.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -415,7 +419,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_STRICT_CONCURRENCY = complete;
-				SWIFT_VERSION = 5.0;
+				SWIFT_VERSION = 6.0;
 			};
 			name = Debug;
 		};
@@ -439,7 +443,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_STRICT_CONCURRENCY = complete;
-				SWIFT_VERSION = 5.0;
+				SWIFT_VERSION = 6.0;
 			};
 			name = Release;
 		};
@@ -455,7 +459,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_STRICT_CONCURRENCY = complete;
-				SWIFT_VERSION = 5.0;
+				SWIFT_VERSION = 6.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/SazBunnyCountdown.app/Contents/MacOS/SazBunnyCountdown";
 			};
 			name = Debug;
@@ -472,7 +476,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_STRICT_CONCURRENCY = complete;
-				SWIFT_VERSION = 5.0;
+				SWIFT_VERSION = 6.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/SazBunnyCountdown.app/Contents/MacOS/SazBunnyCountdown";
 			};
 			name = Release;

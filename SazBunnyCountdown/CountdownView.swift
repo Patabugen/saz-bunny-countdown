@@ -3,6 +3,7 @@ import SwiftUI
 
 @MainActor
 struct CountdownView: View {
+    @EnvironmentObject var sizePreset: SizePreset
     @ObservedObject var viewModel: CountdownViewModel
     @ObservedObject var focusState: PanelFocusState
     let onDismiss: () -> Void
@@ -17,19 +18,19 @@ struct CountdownView: View {
             onDismiss: onDismiss
         ) {
             SazBunnyLayout(bunnyImage: viewModel.isFinished ? "SazBunnyExpired" : "SazBunnyCountdown") {
-                VStack(spacing: 4) {
+                VStack(spacing: sizePreset.scaled(4)) {
                     Text(viewModel.timeString)
-                        .font(.system(size: 48, weight: .bold, design: .rounded))
+                        .font(sizePreset.font(48, weight: .bold))
                         .monospacedDigit()
                         .foregroundStyle(viewModel.isFinished ? Colors.textDigitsExpired : Colors.textDigits)
 
-                    HStack(spacing: 8) {
+                    HStack(spacing: sizePreset.scaled(8)) {
                         Button(action: onDismiss) {
                             Text("Quit")
-                                .font(.system(size: 13, weight: .semibold, design: .rounded))
+                                .font(sizePreset.font(13, weight: .semibold))
                                 .foregroundStyle(Colors.buttonText)
-                                .padding(.horizontal, 16)
-                                .padding(.vertical, 5)
+                                .padding(.horizontal, sizePreset.scaled(16))
+                                .padding(.vertical, sizePreset.scaled(5))
                                 .background(
                                     Capsule()
                                         .fill(viewModel.isFinished ? Colors.buttonExpiredFill : Colors.buttonFill)
@@ -41,10 +42,10 @@ struct CountdownView: View {
                         if viewModel.isFinished {
                             Button(action: onStartNew) {
                                 Text("Start New")
-                                    .font(.system(size: 13, weight: .semibold, design: .rounded))
+                                    .font(sizePreset.font(13, weight: .semibold))
                                     .foregroundStyle(Colors.buttonText)
-                                    .padding(.horizontal, 16)
-                                    .padding(.vertical, 5)
+                                    .padding(.horizontal, sizePreset.scaled(16))
+                                    .padding(.vertical, sizePreset.scaled(5))
                                     .background(
                                         Capsule()
                                             .fill(Colors.accent)
@@ -53,7 +54,7 @@ struct CountdownView: View {
                             .buttonStyle(.plain)
                         } else if let target = viewModel.targetTimeString {
                             Text("until \(target)")
-                                .font(.system(size: 12, weight: .medium, design: .rounded))
+                                .font(sizePreset.font(12, weight: .medium))
                                 .foregroundStyle(Colors.textSecondary)
                         }
                     }
@@ -61,10 +62,10 @@ struct CountdownView: View {
                     if viewModel.isFinished, let repeatTime = viewModel.repeatTargetTimeString {
                         Button(action: onRepeat) {
                             Text("Repeat \u{2013} countdown to \(repeatTime)")
-                                .font(.system(size: 11, weight: .medium, design: .rounded))
+                                .font(sizePreset.font(11, weight: .medium))
                                 .foregroundStyle(Colors.buttonText)
-                                .padding(.horizontal, 12)
-                                .padding(.vertical, 3)
+                                .padding(.horizontal, sizePreset.scaled(12))
+                                .padding(.vertical, sizePreset.scaled(3))
                                 .background(
                                     Capsule()
                                         .fill(Colors.buttonExpiredFill.opacity(0.7))
@@ -74,7 +75,7 @@ struct CountdownView: View {
                         .transition(.opacity)
                     }
                 }
-                .padding(.leading, 20)
+                .padding(.leading, sizePreset.scaled(20))
             }
         }
         .accessibilityElement(children: .contain)

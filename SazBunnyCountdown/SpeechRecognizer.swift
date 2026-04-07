@@ -8,10 +8,10 @@ class SpeechRecognizer: ObservableObject {
     @Published var isListening: Bool = false
     @Published var error: String?
 
-    private let speechRecognizer = SFSpeechRecognizer()
+    private lazy var speechRecognizer = SFSpeechRecognizer()
     private var recognitionRequest: SFSpeechAudioBufferRecognitionRequest?
     private var recognitionTask: SFSpeechRecognitionTask?
-    private let audioEngine = AVAudioEngine()
+    private lazy var audioEngine = AVAudioEngine()
     private var silenceTimer: Timer?
     private var onResult: ((String) -> Void)?
 

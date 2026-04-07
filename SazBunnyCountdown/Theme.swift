@@ -43,7 +43,7 @@ enum Colors {
     static let outerShadowY: CGFloat = 4
 
     // Geometry
-    static let cornerRadius: CGFloat = 20
+    static let baseCornerRadius: CGFloat = 20
 }
 
 // MARK: - Window Dimensions

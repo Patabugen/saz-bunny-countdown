@@ -24,10 +24,12 @@ struct SnapshotTests {
         viewModel.targetTimeString = targetTimeString
         let focusState = PanelFocusState()
         focusState.isFocused = isFocused
+        let preset = SizePreset()
 
         let view = CountdownView(viewModel: viewModel, focusState: focusState, onDismiss: {}, onStartNew: {}, onRepeat: {})
+            .environmentObject(preset)
         let hostingView = NSHostingView(rootView: view)
-        hostingView.frame = NSRect(x: 0, y: 0, width: WindowConstants.width, height: WindowConstants.height)
+        hostingView.frame = NSRect(x: 0, y: 0, width: preset.windowWidth, height: preset.windowHeight)
         return hostingView
     }
 
@@ -40,10 +42,12 @@ struct SnapshotTests {
         speechRecognizer.transcript = transcript
         let focusState = PanelFocusState()
         focusState.isFocused = isFocused
+        let preset = SizePreset()
 
         let view = ListeningView(speechRecognizer: speechRecognizer, focusState: focusState) {}
+            .environmentObject(preset)
         let hostingView = NSHostingView(rootView: view)
-        hostingView.frame = NSRect(x: 0, y: 0, width: WindowConstants.width, height: WindowConstants.height)
+        hostingView.frame = NSRect(x: 0, y: 0, width: preset.windowWidth, height: preset.windowHeight)
         return hostingView
     }
 

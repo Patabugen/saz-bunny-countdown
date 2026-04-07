@@ -1,10 +1,13 @@
 import AppKit
-import Combine
 import SwiftUI
 
 @MainActor
 class FloatingPanel: NSWindow {
     let focusState = PanelFocusState()
+    weak var sizePreset: SizePreset?
+
+    private var dragStartLocation: NSPoint?
+    private var dragStartFrame: NSRect?
 
     init(contentView: NSView) {
         super.init(
@@ -34,6 +37,60 @@ class FloatingPanel: NSWindow {
     override func resignKey() {
         super.resignKey()
         focusState.isFocused = false
+    }
+
+    // MARK: - Resize Handle
+
+    private let resizeHitSize: CGFloat = 20
+
+    private func isInResizeZone(_ point: NSPoint) -> Bool {
+        // Bottom-right corner in window coordinates (origin is bottom-left)
+        point.x >= frame.width - resizeHitSize && point.y <= resizeHitSize
+    }
+
+    override func mouseDown(with event: NSEvent) {
+        let location = event.locationInWindow
+        if isInResizeZone(location) {
+            dragStartLocation = convertPoint(toScreen: location)
+            dragStartFrame = frame
+            isMovableByWindowBackground = false
+        } else {
+            super.mouseDown(with: event)
+        }
+    }
+
+    override func mouseDragged(with event: NSEvent) {
+        guard let startScreen = dragStartLocation,
+              let startFrame = dragStartFrame,
+              let sizePreset else {
+            super.mouseDragged(with: event)
+            return
+        }
+
+        let currentScreen = convertPoint(toScreen: event.locationInWindow)
+        let deltaX = currentScreen.x - startScreen.x
+
+        // Lock aspect ratio: derive new width from drag, compute height
+        let newWidth = max(SizePreset.minWidth, min(SizePreset.maxWidth, startFrame.width + deltaX))
+        let newHeight = newWidth / SizePreset.aspectRatio
+
+        // Anchor top-left: adjust origin.y so the top edge stays fixed
+        let newY = startFrame.origin.y + (startFrame.height - newHeight)
+
+        let newFrame = NSRect(x: startFrame.origin.x, y: newY, width: newWidth, height: newHeight)
+        setFrame(newFrame, display: true)
+
+        sizePreset.scale = newWidth / SizePreset.baseWidth
+    }
+
+    override func mouseUp(with event: NSEvent) {
+        if dragStartLocation != nil {
+            dragStartLocation = nil
+            dragStartFrame = nil
+            isMovableByWindowBackground = true
+        } else {
+            super.mouseUp(with: event)
+        }
     }
 }
 

@@ -1,6 +1,7 @@
 import SwiftUI
 
 struct SazBunnyLayout<Content: View>: View {
+    @EnvironmentObject var sizePreset: SizePreset
     let bunnyImage: String
     @ViewBuilder let content: Content
 
@@ -14,9 +15,9 @@ struct SazBunnyLayout<Content: View>: View {
             Image(bunnyImage)
                 .resizable()
                 .aspectRatio(contentMode: .fit)
-                .frame(maxWidth: 144, maxHeight: .infinity, alignment: .bottom)
-                .padding(.trailing, 16)
-                .padding(.top, 30)
+                .frame(maxWidth: sizePreset.scaled(144), maxHeight: .infinity, alignment: .bottom)
+                .padding(.trailing, sizePreset.scaled(16))
+                .padding(.top, sizePreset.scaled(30))
                 .accessibilityHidden(true)
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)

@@ -2,6 +2,12 @@
 
 ## Unreleased
 
+- Resizable window — drag the bottom-right corner to scale the panel (0.5× to 1.5×, locked 2:1 aspect ratio). Size persists across launches.
+- CLI argument support — launch with a time string (e.g. `SazBunnyCountdown "3pm"`) for testing without the URL scheme
+- Defer SpeechRecognizer creation until listening mode, avoiding TCC crash when launched from terminal
+
+## 1.1 — 2026-04-07
+
 - Repeat button on the completion screen — restarts the timer targeting the same time-of-day at its next occurrence (e.g. "20 past" repeats at :20 of the next hour)
 
 ## 1.0.0 — 2026-03-27

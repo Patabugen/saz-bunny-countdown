@@ -1,5 +1,8 @@
 import AppKit
+import os.log
 import SwiftUI
+
+private let log = Logger(subsystem: "com.patabugen.sazbunnycountdown", category: "AppDelegate")
 
 @MainActor
 class AppDelegate: NSObject, NSApplicationDelegate {
@@ -7,15 +10,34 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
     private var panel: FloatingPanel?
     let viewModel = CountdownViewModel()
-    let speechRecognizer = SpeechRecognizer()
+    private var speechRecognizer: SpeechRecognizer?
+    let sizePreset = SizePreset()
     private var launchedWithURL = false
 
     func applicationDidFinishLaunching(_ notification: Notification) {
+        log.info("didFinishLaunching – args: \(CommandLine.arguments, privacy: .public)")
+
+        // Skip UI setup when running as a test host.
+        if ProcessInfo.processInfo.environment["XCTestConfigurationFilePath"] != nil {
+            log.info("Running as test host – skipping UI")
+            return
+        }
+
+        // Support launching with a time string as a CLI argument (e.g. "3pm").
+        if CommandLine.arguments.count > 1 {
+            let timeString = CommandLine.arguments[1]
+            log.info("CLI arg time: \(timeString, privacy: .public)")
+            launchedWithURL = true
+            handleTimeString(timeString)
+            return
+        }
+
         // application(_:open:) is delivered on the same run loop iteration
         // as didFinishLaunching when the app is launched via URL. Deferring
         // to the next cycle ensures the URL handler has already fired.
         DispatchQueue.main.async { [weak self] in
             guard let self, !self.launchedWithURL else { return }
+            log.info("No URL – showing listening view")
             self.showListening()
         }
     }
@@ -37,11 +59,14 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     }
 
     func handleTimeString(_ timeString: String) {
+        log.info("Parsing time: \(timeString, privacy: .public)")
         let result = TimeParser.parse(timeString)
         switch result {
         case .success(let date):
+            log.info("Parsed OK – target: \(date, privacy: .public)")
             showTimer(targetDate: date, originalInput: timeString)
         case .failure(let message):
+            log.error("Parse failed: \(message, privacy: .public)")
             showListening(errorMessage: message)
         }
     }
@@ -49,6 +74,9 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     private var parseError: String?
 
     func showListening(errorMessage: String? = nil) {
+        if speechRecognizer == nil { speechRecognizer = SpeechRecognizer() }
+        guard let speechRecognizer else { return }
+
         speechRecognizer.transcript = ""
         speechRecognizer.error = nil
         parseError = errorMessage
@@ -69,7 +97,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     }
 
     func showTimer(targetDate: Date, originalInput: String? = nil) {
-        speechRecognizer.stopListening()
+        speechRecognizer?.stopListening()
         viewModel.start(targetDate: targetDate, originalInput: originalInput)
         ensurePanel()
 
@@ -91,7 +119,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     func dismissTimer() {
         saveCurrentScreen()
         viewModel.stop()
-        speechRecognizer.stopListening()
+        speechRecognizer?.stopListening()
         panel?.orderOut(nil)
         panel = nil
         NSApp.terminate(nil)
@@ -99,16 +127,27 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
     private func ensurePanel() {
         if panel == nil {
-            panel = FloatingPanel(contentView: NSView())
+            let newPanel = FloatingPanel(contentView: NSView())
+            newPanel.sizePreset = sizePreset
+            panel = newPanel
         }
     }
 
     private func showPanel<V: View>(content: V) {
-        let hostingView = NSHostingView(rootView: content)
+        let hostingView = NSHostingView(
+            rootView: content.environmentObject(sizePreset)
+        )
         panel?.contentView = hostingView
-        positionPanel()
+        resizeAndPositionPanel()
         panel?.orderFront(nil)
         panel?.makeKey()
+    }
+
+    private func resizeAndPositionPanel() {
+        guard let panel = panel else { return }
+        let newSize = NSSize(width: sizePreset.windowWidth, height: sizePreset.windowHeight)
+        panel.setFrame(NSRect(origin: panel.frame.origin, size: newSize), display: true)
+        positionPanel()
     }
 
     private func positionPanel() {
