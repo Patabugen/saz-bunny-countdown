@@ -55,11 +55,12 @@ struct PanelChrome<Content: View>: View {
                     .background(Circle().fill(bgColor))
             }
             .buttonStyle(.plain)
+            .focusable(false)
             .accessibilityLabel("Close")
             .padding(sizePreset.scaled(10))
 
         }
-        .frame(width: sizePreset.windowWidth, height: sizePreset.windowHeight)
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
         .overlay(alignment: .bottomTrailing) {
             ResizeGrip(scale: sizePreset.scale, isExpired: isExpired)
                 .padding(sizePreset.scaled(6))
@@ -68,16 +69,24 @@ struct PanelChrome<Content: View>: View {
     }
 }
 
-/// A diagonal grip indicator for the resize handle zone.
+/// Three diagonal lines in the bottom-right corner — the standard macOS resize grip.
 private struct ResizeGrip: View {
     let scale: CGFloat
     let isExpired: Bool
 
     var body: some View {
-        let color = isExpired ? Colors.accentExpired : Colors.accent
-        Image(systemName: "arrow.down.right")
-            .font(.system(size: 10 * scale, weight: .semibold))
-            .foregroundStyle(color.opacity(0.6))
-            .frame(width: 20 * scale, height: 20 * scale)
+        let color = (isExpired ? Colors.accentExpired : Colors.accent).opacity(0.4)
+        let size: CGFloat = 14 * scale
+        let gap: CGFloat = 4 * scale
+
+        Path { path in
+            for i in 1...3 {
+                let inset = gap * CGFloat(i)
+                path.move(to: CGPoint(x: size - inset, y: size))
+                path.addLine(to: CGPoint(x: size, y: size - inset))
+            }
+        }
+        .stroke(color, style: StrokeStyle(lineWidth: 1.5, lineCap: .round))
+        .frame(width: size, height: size)
     }
 }

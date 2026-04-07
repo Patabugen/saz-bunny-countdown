@@ -8,6 +8,7 @@ class FloatingPanel: NSWindow {
 
     private var dragStartLocation: NSPoint?
     private var dragStartFrame: NSRect?
+    private var lastScaleUpdate = CACurrentMediaTime()
 
     init(contentView: NSView) {
         super.init(
@@ -26,6 +27,21 @@ class FloatingPanel: NSWindow {
         isMovableByWindowBackground = true
     }
 
+    func installTrackingArea() {
+        guard let contentView else { return }
+        // Remove any previous tracking area we added
+        for area in contentView.trackingAreas where area.owner === self {
+            contentView.removeTrackingArea(area)
+        }
+        let trackingArea = NSTrackingArea(
+            rect: .zero,
+            options: [.mouseEnteredAndExited, .mouseMoved, .activeAlways, .inVisibleRect],
+            owner: self,
+            userInfo: nil
+        )
+        contentView.addTrackingArea(trackingArea)
+    }
+
     override var canBecomeKey: Bool { true }
     override var canBecomeMain: Bool { false }
 
@@ -41,11 +57,33 @@ class FloatingPanel: NSWindow {
 
     // MARK: - Resize Handle
 
-    private let resizeHitSize: CGFloat = 20
+    private let resizeHitSize: CGFloat = 28
 
     private func isInResizeZone(_ point: NSPoint) -> Bool {
         // Bottom-right corner in window coordinates (origin is bottom-left)
         point.x >= frame.width - resizeHitSize && point.y <= resizeHitSize
+    }
+
+    override func mouseMoved(with event: NSEvent) {
+        if isInResizeZone(event.locationInWindow) {
+            if #available(macOS 15.0, *) {
+                NSCursor.frameResize(position: .bottomRight, directions: .all).set()
+            }
+        } else {
+            NSCursor.arrow.set()
+        }
+        super.mouseMoved(with: event)
+    }
+
+    override func mouseExited(with event: NSEvent) {
+        NSCursor.arrow.set()
+        super.mouseExited(with: event)
+    }
+
+    override func cursorUpdate(with event: NSEvent) {
+        // Prevent AppKit from resetting cursor in the resize zone
+        if isInResizeZone(event.locationInWindow) { return }
+        super.cursorUpdate(with: event)
     }
 
     override func mouseDown(with event: NSEvent) {
@@ -80,11 +118,18 @@ class FloatingPanel: NSWindow {
         let newFrame = NSRect(x: startFrame.origin.x, y: newY, width: newWidth, height: newHeight)
         setFrame(newFrame, display: true)
 
-        sizePreset.scale = newWidth / SizePreset.baseWidth
+        // Debounce SwiftUI relayout: update scale every ~100ms during drag
+        let now = CACurrentMediaTime()
+        if now - lastScaleUpdate > 0.05 {
+            lastScaleUpdate = now
+            sizePreset.scale = newWidth / SizePreset.baseWidth
+        }
     }
 
     override func mouseUp(with event: NSEvent) {
         if dragStartLocation != nil {
+            // Final precise update on release
+            sizePreset?.scale = frame.width / SizePreset.baseWidth
             dragStartLocation = nil
             dragStartFrame = nil
             isMovableByWindowBackground = true

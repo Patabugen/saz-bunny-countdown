@@ -135,6 +135,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             rootView: content.environmentObject(sizePreset)
         )
         panel?.contentView = hostingView
+        panel?.installTrackingArea()
         resizeAndPositionPanel()
         panel?.orderFront(nil)
         panel?.makeKey()
