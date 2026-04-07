@@ -55,7 +55,6 @@ struct PanelChrome<Content: View>: View {
                     .background(Circle().fill(bgColor))
             }
             .buttonStyle(.plain)
-            .focusable(false)
             .accessibilityLabel("Close")
             .padding(sizePreset.scaled(10))
 
@@ -90,3 +89,4 @@ private struct ResizeGrip: View {
         .frame(width: size, height: size)
     }
 }
+

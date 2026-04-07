@@ -21,7 +21,13 @@ final class SizePreset: ObservableObject {
         set {
             let clamped = min(Self.maxScale, max(Self.minScale, newValue))
             guard clamped != _scale else { return }
-            objectWillChange.send()
+            // Disable animations so the relayout is instant — prevents
+            // focus rings and other chrome from flashing at intermediate sizes.
+            var transaction = Transaction()
+            transaction.disablesAnimations = true
+            withTransaction(transaction) {
+                objectWillChange.send()
+            }
             _scale = clamped
             UserDefaults.standard.set(clamped, forKey: Self.userDefaultsKey)
         }
