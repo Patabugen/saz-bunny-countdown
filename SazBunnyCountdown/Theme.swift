@@ -45,10 +45,3 @@ enum Colors {
     // Geometry
     static let baseCornerRadius: CGFloat = 20
 }
-
-// MARK: - Window Dimensions
-
-enum WindowConstants {
-    static let width: CGFloat = 320
-    static let height: CGFloat = 160
-}

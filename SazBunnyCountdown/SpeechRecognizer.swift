@@ -49,6 +49,11 @@ class SpeechRecognizer: ObservableObject {
     private func beginRecording() {
         stopListening()
 
+        guard speechRecognizer != nil else {
+            error = "Speech recognition is not available for this locale."
+            return
+        }
+
         let request = SFSpeechAudioBufferRecognitionRequest()
         request.shouldReportPartialResults = true
         if speechRecognizer?.supportsOnDeviceRecognition == true {

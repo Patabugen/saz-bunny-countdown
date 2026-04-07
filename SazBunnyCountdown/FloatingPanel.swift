@@ -11,7 +11,7 @@ class FloatingPanel: NSWindow {
 
     init(contentView: NSView) {
         super.init(
-            contentRect: NSRect(x: 0, y: 0, width: WindowConstants.width, height: WindowConstants.height),
+            contentRect: NSRect(x: 0, y: 0, width: SizePreset.baseWidth, height: SizePreset.baseHeight),
             styleMask: [.borderless],
             backing: .buffered,
             defer: false

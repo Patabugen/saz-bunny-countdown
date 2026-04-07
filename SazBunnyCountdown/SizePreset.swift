@@ -2,7 +2,7 @@ import SwiftUI
 
 @MainActor
 final class SizePreset: ObservableObject {
-    private static let userDefaultsKey = "panelWidth"
+    private static let userDefaultsKey = "panelScale"
 
     static let baseWidth: CGFloat = 320
     static let baseHeight: CGFloat = 160
@@ -15,10 +15,14 @@ final class SizePreset: ObservableObject {
     static var minHeight: CGFloat { baseHeight * minScale }
     static var maxHeight: CGFloat { baseHeight * maxScale }
 
-    @Published var scale: CGFloat {
-        didSet {
-            let clamped = min(Self.maxScale, max(Self.minScale, scale))
-            if clamped != scale { scale = clamped }
+    private var _scale: CGFloat = 1.0
+    var scale: CGFloat {
+        get { _scale }
+        set {
+            let clamped = min(Self.maxScale, max(Self.minScale, newValue))
+            guard clamped != _scale else { return }
+            objectWillChange.send()
+            _scale = clamped
             UserDefaults.standard.set(clamped, forKey: Self.userDefaultsKey)
         }
     }
@@ -26,9 +30,9 @@ final class SizePreset: ObservableObject {
     init() {
         let saved = UserDefaults.standard.double(forKey: Self.userDefaultsKey)
         if saved > 0 {
-            self.scale = min(Self.maxScale, max(Self.minScale, CGFloat(saved)))
+            _scale = min(Self.maxScale, max(Self.minScale, CGFloat(saved)))
         } else {
-            self.scale = 1.0
+            _scale = 1.0
         }
     }
 

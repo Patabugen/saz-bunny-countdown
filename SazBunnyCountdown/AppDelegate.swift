@@ -88,11 +88,8 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         }
         showPanel(content: view)
 
-        Task {
-            try? await Task.sleep(for: .milliseconds(200))
-            speechRecognizer.startListening { [weak self] transcript in
-                self?.handleSpeechResult(transcript)
-            }
+        speechRecognizer.startListening { [weak self] transcript in
+            self?.handleSpeechResult(transcript)
         }
     }
 
