@@ -20,15 +20,29 @@ class SpeechRecognizer: ObservableObject {
 
         SFSpeechRecognizer.requestAuthorization { [weak self] status in
             Task { @MainActor [weak self] in
+                guard let self else { return }
                 switch status {
                 case .authorized:
-                    self?.beginRecording()
+                    self.requestMicrophoneAndRecord()
                 case .denied, .restricted:
-                    self?.error = "Speech recognition permission denied. Enable in System Settings > Privacy."
+                    self.error = "Speech recognition permission denied. Enable in System Settings > Privacy."
                 case .notDetermined:
-                    self?.error = "Speech recognition permission not determined."
+                    self.error = "Speech recognition permission not determined."
                 @unknown default:
-                    self?.error = "Speech recognition unavailable."
+                    self.error = "Speech recognition unavailable."
+                }
+            }
+        }
+    }
+
+    private func requestMicrophoneAndRecord() {
+        AVCaptureDevice.requestAccess(for: .audio) { [weak self] granted in
+            Task { @MainActor [weak self] in
+                guard let self else { return }
+                if granted {
+                    self.beginRecording()
+                } else {
+                    self.error = "Microphone access denied. Enable in System Settings > Privacy."
                 }
             }
         }
