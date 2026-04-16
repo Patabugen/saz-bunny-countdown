@@ -35,7 +35,6 @@ struct SnapshotTests {
 
     private func makeListeningView(
         isFocused: Bool,
-        isListening: Bool = true,
         transcript: String = ""
     ) -> NSView {
         let speechRecognizer = SpeechRecognizer()

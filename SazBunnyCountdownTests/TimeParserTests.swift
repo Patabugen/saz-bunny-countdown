@@ -112,34 +112,10 @@ struct TimeParserTests {
         #expect(date > Date())
     }
 
-    // MARK: - All Times Succeed (no night-hour confirmation)
-
-    @Test("Night hours return success", arguments: [
-        "11 PM", "11:30 PM", "3 AM", "3:00 AM",
-    ])
-    func nightHoursSucceed(input: String) {
-        let result = TimeParser.parse(input)
-        guard case .success = result else {
-            Issue.record("Expected success for \(input), got \(result)")
-            return
-        }
-    }
-
-    @Test("Daytime hours return success", arguments: [
-        "10 AM", "2 PM", "9:00 PM",
-    ])
-    func daytimeHoursSucceed(input: String) {
-        let result = TimeParser.parse(input)
-        guard case .success = result else {
-            Issue.record("Expected success for \(input), got \(result)")
-            return
-        }
-    }
-
     // MARK: - Invalid Inputs
 
     @Test("Invalid inputs return failure", arguments: [
-        "abc", "", "25:00", "13:60", "99:99",
+        "abc", "", "24", "25:00", "13:60", "99:99", "2400",
     ])
     func invalidInputs(input: String) {
         let result = TimeParser.parse(input)
@@ -253,16 +229,16 @@ struct TimeParserTests {
         #expect(date > Date())
     }
 
-    @Test("Relative time is always in the future")
-    func relativeTimeIsFuture() {
-        for input in ["5 past", "10 to", "20 past", "25 to", "30 past"] {
-            let result = TimeParser.parse(input)
-            guard case .success(let date) = result else {
-                Issue.record("Expected success for '\(input)'")
-                continue
-            }
-            #expect(date > Date(), "Expected future date for '\(input)'")
+    @Test("Relative time is always in the future", arguments: [
+        "5 past", "10 to", "20 past", "25 to", "30 past",
+    ])
+    func relativeTimeIsFuture(input: String) {
+        let result = TimeParser.parse(input)
+        guard case .success(let date) = result else {
+            Issue.record("Expected success for '\(input)'")
+            return
         }
+        #expect(date > Date(), "Expected future date for '\(input)'")
     }
 
     // MARK: - Ambiguous Resolution

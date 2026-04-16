@@ -18,6 +18,30 @@ class SpeechRecognizer: ObservableObject {
     func startListening(onResult: @escaping (String) -> Void) {
         self.onResult = onResult
 
+        // Check current status first. Calling requestAuthorization when the
+        // app is launched directly from a terminal can crash the process
+        // because macOS TCC checks the terminal's Info.plist (not ours) for
+        // the NSSpeechRecognitionUsageDescription key.
+        let currentStatus = SFSpeechRecognizer.authorizationStatus()
+        switch currentStatus {
+        case .authorized:
+            requestMicrophoneAndRecord()
+            return
+        case .denied, .restricted:
+            self.error = "Speech recognition permission denied. Enable in System Settings > Privacy."
+            return
+        case .notDetermined:
+            // Only safe to request when launched via Launch Services (parent is launchd).
+            // Terminal launches inherit the terminal's TCC identity and will abort.
+            if getppid() != 1 {
+                self.error = "Please open this app from Finder or Spotlight to grant speech recognition permission."
+                return
+            }
+        @unknown default:
+            self.error = "Speech recognition unavailable."
+            return
+        }
+
         SFSpeechRecognizer.requestAuthorization { [weak self] status in
             Task { @MainActor [weak self] in
                 guard let self else { return }

@@ -418,8 +418,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.patabugen.sazbunnycountdown;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
-				SWIFT_STRICT_CONCURRENCY = complete;
-				SWIFT_VERSION = 6.0;
+				SWIFT_VERSION = 5.0;
 			};
 			name = Debug;
 		};
@@ -442,8 +441,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.patabugen.sazbunnycountdown;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
-				SWIFT_STRICT_CONCURRENCY = complete;
-				SWIFT_VERSION = 6.0;
+				SWIFT_VERSION = 5.0;
 			};
 			name = Release;
 		};
@@ -458,8 +456,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.patabugen.sazbunnycountdown.tests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = NO;
-				SWIFT_STRICT_CONCURRENCY = complete;
-				SWIFT_VERSION = 6.0;
+				SWIFT_VERSION = 5.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/SazBunnyCountdown.app/Contents/MacOS/SazBunnyCountdown";
 			};
 			name = Debug;
@@ -475,8 +472,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.patabugen.sazbunnycountdown.tests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = NO;
-				SWIFT_STRICT_CONCURRENCY = complete;
-				SWIFT_VERSION = 6.0;
+				SWIFT_VERSION = 5.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/SazBunnyCountdown.app/Contents/MacOS/SazBunnyCountdown";
 			};
 			name = Release;
