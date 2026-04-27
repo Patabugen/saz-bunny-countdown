@@ -57,9 +57,14 @@ jobs:
 
           cp -R "$APP_PATH" "Saz-Bunny-Countdown.app"
 
-          # Ad-hoc sign the full bundle (seals resources so Gatekeeper accepts it)
-          codesign --force --deep --sign - "Saz-Bunny-Countdown.app"
-          codesign --verify --verbose "Saz-Bunny-Countdown.app"
+          # xcodebuild already ad-hoc signs with the entitlements file. Do NOT
+          # re-sign without --preserve-metadata=entitlements: a bare
+          # `codesign --force --sign -` strips the entitlements blob, which
+          # silently breaks microphone / speech recognition at runtime.
+          codesign --verify --deep --strict --verbose=2 "Saz-Bunny-Countdown.app"
+          codesign -d --entitlements - "Saz-Bunny-Countdown.app" \
+            | grep -q audio-input \
+            || { echo "::error::audio-input entitlement missing — release build is broken"; exit 1; }
 
           ditto -c -k --sequesterRsrc --keepParent "Saz-Bunny-Countdown.app" "Saz-Bunny-Countdown.zip"
 
