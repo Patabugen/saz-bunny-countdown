@@ -126,6 +126,29 @@ struct SpeechTimeExtractorTests {
         #expect(SpeechTimeExtractor.extractTime(from: input) == expected)
     }
 
+    // MARK: - "Twenty to" Homophones
+    // STT often mishears "twenty to" as "twenty two" or just "22" because it
+    // can't distinguish "to" from "two". Treat those bare forms as "20 to".
+
+    @Test("Treats 'twenty to' homophones as '20 to'", arguments: [
+        ("22", "20 to"),
+        ("twenty two", "20 to"),
+        ("twenty-two", "20 to"),
+        ("Twenty Two", "20 to"),
+        ("  22  ", "20 to"),
+    ])
+    func twentyToHomophone(input: String, expected: String) {
+        #expect(SpeechTimeExtractor.extractTime(from: input) == expected)
+    }
+
+    @Test("Does not misfire on '22' when paired with other time markers", arguments: [
+        ("22:00", "22:00"),
+        ("22 past", "22 past"),
+    ])
+    func twentyToHomophoneDoesNotMisfire(input: String, expected: String) {
+        #expect(SpeechTimeExtractor.extractTime(from: input) == expected)
+    }
+
     // MARK: - Passthrough
 
     @Test("Returns original for unrecognized input", arguments: [

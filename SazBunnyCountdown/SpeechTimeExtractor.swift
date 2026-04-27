@@ -32,6 +32,16 @@ struct SpeechTimeExtractor {
     static func extractTime(from transcript: String) -> String {
         let lower = transcript.lowercased()
 
+        // Homophone: speech-to-text frequently mishears "twenty to" as "twenty two"
+        // or "22" because it can't distinguish "to" from "two". Treat a transcript
+        // that consists solely of one of those forms as "20 to" (40 minutes past
+        // the current hour). Restricted to whole-transcript matches so phrases
+        // like "twenty two minutes past" or "22:00" remain unaffected.
+        let trimmed = lower.trimmingCharacters(in: .whitespacesAndNewlines)
+        if trimmed.range(of: #"^(22|twenty[\s-]two)$"#, options: .regularExpression) != nil {
+            return "20 to"
+        }
+
         // Match relative "X past" / "X to" patterns (e.g. "twenty past", "quarter to", "10 to")
         let relativeWords = wordNumbers.filter { $0.value <= 30 }
             .merging(relativeOnlyWords) { _, new in new }
